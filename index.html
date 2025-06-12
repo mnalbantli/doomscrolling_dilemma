@@ -93,267 +93,125 @@
         }
 
         /* Hero Section (Redesigned) */
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Digital Dilemma: Designed for Attention or Addiction?</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --color-background: #FAFAFA; /* Very light base background */
-            --color-text-primary: #111111; /* Dark charcoal */
-            --color-accent-blue: #007AFF; /* Apple Blue */
-            --color-text-secondary: #6e6e73; /* Medium gray for secondary text */
-            --color-card-bg: #FFFFFF; /* White for card/element backgrounds */
-            --color-border: #E0E0E0; /* Light gray for borders/separators */
-            --font-primary: 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            line-height: 1.6;
-            margin: 0;
-            scroll-behavior: smooth;
-            overflow-x: hidden; /* Prevents horizontal scroll from responsive elements */
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Hero Section Styling */
-        #hero {
-            height: 100vh; /* Full viewport height for an immersive landing */
+        #hero-v2 {
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Vertically center content */
-            align-items: center; /* Horizontally center content */
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            
-            /* Soft glass/light gradient background */
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.7) 0%, transparent 60%),
-                var(--color-background); /* Base background color */
-            
+            background: radial-gradient(circle at top left, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                        var(--color-background); /* Subtle light blobs */
             padding: 2rem;
-            position: relative; /* For illustration positioning */
-            overflow: hidden; /* Ensures illustration doesn't spill out */
-            animation: fadeIn 1.5s ease-out forwards; /* Initial fade-in animation */
+            animation: fadeIn 2s ease-out forwards;
+            overflow: hidden; /* Hide overflowing visuals */
+            position: relative;
         }
-
-        .hero-content {
-            position: relative; /* Ensures content overlays the illustration */
-            z-index: 10; 
-            max-width: 900px; /* Constrain content width for readability */
-            margin: 0 auto; /* Center content horizontally */
-            /* Removed initial opacity/transform for instant visibility,
-               animation is now primarily for the overall section and illustration */
+        #hero-v2 .hero-content {
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
-
-        #hero h1 {
-            font-size: 5rem; /* Large, bold headline */
+        #hero-v2 .hero-headline {
+            font-size: 5rem;
             color: var(--color-text-primary);
-            margin-bottom: 1rem;
-            line-height: 1.05; /* Tighter line height for large text */
-            letter-spacing: -0.04em; /* Subtle negative letter spacing for modern feel */
+            margin-bottom: 1.5rem;
+            line-height: 1.05;
         }
-
-        .hero-content .subheadline {
-            font-size: 1.75rem; /* Clear and prominent subheadline */
-            max-width: 800px;
-            margin: 0 auto 1.5rem auto; /* Vertical margin for spacing */
+        #hero-v2 .hero-subheadline {
+            font-size: 1.75rem;
             color: var(--color-text-secondary);
-            font-weight: 400; /* Lighter weight for subheadline contrast */
+            margin-bottom: 2rem;
         }
-
-        .hero-content .trust-tagline {
-            font-size: 1rem; /* Smaller, supporting credibility text */
+        #hero-v2 .hero-trust {
+            font-size: 1rem;
             color: var(--color-text-secondary);
-            opacity: 0.8; /* Slightly subdued for hierarchy */
-            margin-bottom: 2.5rem; /* Space before CTAs */
+            margin-bottom: 3rem;
+            opacity: 0.7;
         }
-
-        .cta-group {
+        #hero-v2 .hero-cta-group {
             display: flex;
-            justify-content: center; /* Center buttons horizontally */
+            justify-content: center;
             gap: 1.5rem; /* Space between buttons */
-            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-            margin-top: 2rem; /* Ensure space below tagline */
+            flex-wrap: wrap; /* Allow buttons to wrap on small screens */
         }
-
-        .cta-button {
+        #hero-v2 .cta-primary,
+        #hero-v2 .cta-secondary {
             display: inline-block;
-            background-color: var(--color-accent-blue);
-            color: white;
-            padding: 1.2rem 2.8rem; /* Generous padding for a prominent click target */
+            padding: 1.2rem 2.8rem; /* Larger padding for prominent buttons */
             border-radius: 9999px; /* Pill shape */
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.15rem; /* Readable button text size */
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 6px 18px rgba(0, 122, 255, 0.2); /* Soft shadow for depth */
-            letter-spacing: -0.01em;
+            font-size: 1.15rem; /* Slightly larger font */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
             white-space: nowrap; /* Prevent button text from wrapping */
         }
-
-        .cta-button:hover {
+        #hero-v2 .cta-primary {
+            background-color: var(--color-accent-blue);
+            color: white;
+        }
+        #hero-v2 .cta-primary:hover {
             background-color: #0056b3; /* Darker blue on hover */
-            transform: translateY(-3px); /* Subtle lift effect */
-            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.3); /* Enhanced shadow on hover */
+            transform: translateY(-2px);
         }
-
-        .cta-button.secondary {
+        #hero-v2 .cta-secondary {
+            background-color: var(--color-card-bg);
+            color: var(--color-accent-blue);
+            border: 1px solid var(--color-accent-blue); /* Outline style */
+        }
+        #hero-v2 .cta-secondary:hover {
+            background-color: var(--color-accent-blue); /* Fill on hover */
+            color: white;
+            transform: translateY(-2px);
+        }
+        body.dark-mode #hero-v2 .cta-secondary {
             background-color: transparent;
-            border: 1px solid var(--color-border);
-            color: var(--color-text-primary);
-            box-shadow: none; /* No shadow by default for secondary */
+            color: var(--color-accent-blue);
+            border: 1px solid var(--color-accent-blue);
+        }
+        body.dark-mode #hero-v2 .cta-secondary:hover {
+            background-color: var(--color-accent-blue);
+            color: white;
         }
 
-        .cta-button.secondary:hover {
-            background-color: var(--color-border); /* Light background on hover */
-            transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* Subtle shadow on hover for secondary */
-        }
-
-        /* Central Illustration */
-        .hero-illustration {
+        #hero-v2 .hero-illustration {
             position: absolute;
-            bottom: -5%; /* Position slightly below viewport to ensure full visibility on load */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%; /* Base width, will scale with max-width */
-            max-width: 700px; /* Maximum size for desktop */
+            bottom: -50px; /* Slightly off-screen to create depth */
+            right: -50px;
+            width: 50vw; /* Responsive width */
+            max-width: 600px; /* Max size for desktop */
             height: auto;
-            opacity: 0.7; /* Subtly faded to blend with background */
-            pointer-events: none; /* Non-interactive, allows clicks to pass through */
-            z-index: 5; /* Stays behind text content */
-            animation: slideUp 2s ease-out forwards; /* Animation for illustration to slide into view */
-        }
-        @keyframes slideUp {
-            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+            opacity: 0.2; /* Subtle background visual */
+            filter: grayscale(100%) blur(5px); /* Desaturated and blurred */
+            z-index: 1;
+            transform: rotate(-10deg);
+            animation: float-illustration 15s ease-in-out infinite alternate;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 1024px) {
-            #hero h1 { font-size: 4rem; }
-            .hero-content .subheadline { font-size: 1.5rem; }
-            .hero-illustration { max-width: 600px; }
+        @keyframes float-illustration {
+            0% { transform: translate(0, 0) rotate(-10deg); }
+            50% { transform: translate(-20px, 15px) rotate(-8deg); }
+            100% { transform: translate(0, 0) rotate(-10deg); }
         }
 
         @media (max-width: 768px) {
-            #hero {
-                padding: 4rem 1rem;
-                height: auto; /* Allow height to adjust based on content */
-                min-height: 85vh; /* Ensure hero is still visually dominant */
-                justify-content: flex-start; /* Align content from the top on smaller screens */
-            }
-            #hero h1 { font-size: 2.5rem; line-height: 1.2; }
-            .hero-content .subheadline { font-size: 1.1rem; max-width: 100%; }
-            .hero-content .trust-tagline { font-size: 0.85rem; margin-bottom: 2rem; }
-            .cta-group {
+            #hero-v2 .hero-headline { font-size: 2.8rem; }
+            #hero-v2 .hero-subheadline { font-size: 1.25rem; }
+            #hero-v2 .hero-cta-group {
                 flex-direction: column; /* Stack buttons vertically on mobile */
                 gap: 1rem;
             }
-            .cta-button {
-                width: 100%; /* Full width buttons for easy tapping */
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-            .hero-illustration {
-                width: 95%; /* Increase illustration size on mobile */
-                bottom: 0; /* Anchor to bottom */
-                max-width: none; /* Remove max-width constraint */
-            }
-            .scroll-indicator {
-                bottom: 1rem; /* Adjust position on mobile */
+            #hero-v2 .hero-illustration {
+                width: 70vw;
+                bottom: -20px;
+                right: -20px;
             }
         }
-        @media (max-width: 480px) {
-            #hero h1 { font-size: 2rem; }
-            .hero-content .subheadline { font-size: 1rem; }
-            .cta-button { font-size: 0.95rem; }
-        }
-
-        /* General Animations (retained for consistency) */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-8px); }
-            60% { transform: translateY(-4px); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Hero Section: The Digital Dilemma -->
-    <section id="hero">
-        <div class="hero-content container">
-            <h1>The Digital Dilemma:<br>Are We Designing for Attention or Addiction?</h1>
-            <p class="subheadline">A comprehensive manifesto exploring how platform design subtly trades user well-being for engagement, and a path towards ethical innovation.</p>
-            <p class="trust-tagline">Backed by a 40+ study meta-analysis (2015–2024)</p>
-            <div class="cta-group">
-                <a href="#key-findings" class="cta-button">Explore Key Insights</a>
-                <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf" class="cta-button secondary">Download the Manifesto (PDF)</a>
-            </div>
-        </div>
-        
-        <!-- Central Illustration Placeholder -->
-        <!-- Replace this with your custom SVG or high-resolution PNG illustration -->
-        <!-- Illustration Idea: A stylized, minimalist human figure, perhaps silhouetted or with subtle glowing elements (like from a phone screen), subtly caught in an infinite scroll loop or surrounded by abstract data streams, conveying digital fatigue or cognitive overload. Ensure it fits the Apple-like clean aesthetic. -->
-        <img 
-            src="https://placehold.co/700x400/FAFAFA/007AFF?text=Stylized+Figure%0AInfinite+Scroll+Loop" 
-            alt="Stylized illustration depicting a person engaged in an infinite scrolling loop, symbolizing digital fatigue and cognitive overload." 
-            class="hero-illustration"
-            onerror="this.src='https://placehold.co/700x400/FAFAFA/007AFF?text=Illustration+Fallback'"
-        >
-
-        <!-- Scroll Indicator (optional but good for scrollytelling) -->
-        <a href="#key-findings" class="scroll-indicator">
-            <span>Scroll Down</span>
-            <div class="arrow">↓</div>
-        </a>
-    </section>
-
-    <!-- Script to ensure smooth scrolling to next section -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (scrollIndicator) {
-                scrollIndicator.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    } else {
-                        console.warn(`Scroll target element not found: ${targetId}. Ensure the linked section exists.`);
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
 
         /* Floating CTA Navbar */
         #floating-cta-navbar {
@@ -1270,12 +1128,12 @@
                 reframedHeadlineOutput.textContent = ''; // Clear previous output
 
                 let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
+                chatHistory.push({ role: "user", parts: [{ text: Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}" }] });
                 const payload = { contents: chatHistory };
                 // IMPORTANT: For Canvas environment, leave apiKey as an empty string.
                 // If running outside Canvas, replace this with your actual Gemini API key.
                 const apiKey = "AIzaSyAScLv7AlgSHP6Kx5EIO7KG9C5wAsE2BQo"; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                const apiUrl = https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey};
 
                 try {
                     const response = await fetch(apiUrl, {
@@ -1287,7 +1145,7 @@
                     // Check for successful response before parsing JSON
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                        throw new Error(API error: ${response.status} - ${errorData.error.message || 'Unknown error'});
                     }
 
                     const result = await response.json();
@@ -1302,7 +1160,7 @@
                         console.error("Unexpected API response structure:", result);
                     }
                 } catch (error) {
-                    reframedHeadlineOutput.textContent = `Error: ${error.message}. Please try again later.`;
+                    reframedHeadlineOutput.textContent = Error: ${error.message}. Please try again later.;
                     console.error("Error calling Gemini API:", error);
                 } finally {
                     loadingSpinner.style.display = 'none';
@@ -1335,7 +1193,7 @@
                     riskClass = 'risk-medium';
                 }
 
-                fatigueRiskOutput.textContent = `Risk: ${riskLevel}`;
+                fatigueRiskOutput.textContent = Risk: ${riskLevel};
                 fatigueRiskOutput.className = ''; // Clear previous classes
                 fatigueRiskOutput.classList.add(riskClass);
             };

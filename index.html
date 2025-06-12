@@ -1,178 +1,1118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Dilemma Research</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      background-color: #f9f9fb;
-      color: #111;
-    }
-    header {
-      background-color: white;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 1px 10px rgba(0,0,0,0.05);
-    }
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-    }
-    .section {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-    .card .big {
-      font-size: 2.5rem;
-      color: #007aff;
-      font-weight: 700;
-    }
-    .timeline {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 2rem;
-      padding: 2rem;
-    }
-    .timeline-item {
-      min-width: 280px;
-      background: white;
-      border-radius: 10px;
-      padding: 1.5rem;
-      scroll-snap-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    footer {
-      background: #007aff;
-      color: white;
-      text-align: center;
-      padding: 3rem 2rem;
-    }
-    footer p:last-child {
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.7);
-    }
-    .button {
-      background: white;
-      color: #007aff;
-      padding: 0.75rem 2rem;
-      font-weight: bold;
-      border-radius: 30px;
-      display: inline-block;
-      margin-top: 1rem;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cost of Infinite Scroll: A Research Manifesto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Humane Harmony (Background: #FAFAFA, Primary Text: #111111, Accent: #007AFF, Secondary Text: #6e6e73, Card Background: #FFFFFF) -->
+    <!-- Application Structure Plan: The site uses a scrollytelling narrative:
+        1. Hero: Bold statement, sets the stage.
+        2. Key Findings: Introduces core stats with Apple-style data cards.
+        3. What is Doomscrolling?: Defines the behavior and its psychological symptoms via an icon grid.
+        4. Platforms vs. People: A split layout to contrast platform design goals with user consequences.
+        5. Reframing the Narrative ✨: An LLM-powered tool to transform negative headlines.
+        6. Digital Well-being Tools: Interactive elements to assess fatigue and showcase AI companions.
+        7. Ethical Shift Timeline: A horizontal timeline mapping the evolution of tech ethics.
+        8. Solutions as Feature Cards: Presents actionable design solutions with a product-launch feel.
+        9. Final Manifesto: Concludes with a powerful quote and call to action.
+        This structure builds a narrative from problem to solution, aiming for a "manifesto" feel.
+    -->
+    <!-- Visualization & Content Choices:
+        - Key Findings: Goal -> Inform. Viz -> Data Cards (HTML/CSS). Justification -> Clean, impactful presentation of key numbers.
+        - What is Doomscrolling?: Goal -> Inform/Organize. Viz -> Icon Grid (HTML/CSS with Unicode icons). Justification -> Quick, visual summary of effects.
+        - Platforms vs. People: Goal -> Compare/Explain. Viz -> Split Layout with lists (HTML/CSS). Justification -> Clearly contrasts two perspectives side-by-side.
+        - Reframing the Narrative ✨: Goal -> Interact/Demonstrate. Viz -> Textarea, button, and response div (HTML/CSS + JS with Gemini API call). Justification -> Directly engages users with the "negative headline bias" concept and showcases an AI-powered solution.
+        - Digital Well-being Tools: Goal -> Interact/Personalize. Viz -> Fatigue Risk Indicator (HTML/CSS/JS) and AI Companion Cards (HTML/CSS/Unicode Icons). Justification -> Allows users to self-assess and see concrete examples of solutions.
+        - Ethical Shift Timeline: Goal -> Show Change/Organize. Viz -> Horizontal Timeline (HTML/CSS + JS for scroll/snap). Justification -> Visually narrates the historical progression of tech ethics. Uses stylized Unicode icons for markers.
+        - Solutions as Feature Cards: Goal -> Organize/Inform. Viz -> Product Feature Cards (HTML/CSS). Justification -> Presents solutions in a polished, actionable, and product-like manner.
+        - All sections use CSS for fade-in/slide-up animations via IntersectionObserver.
+    -->
+
+    <style>
+        :root {
+            --color-background: #FAFAFA;
+            --color-text-primary: #111111;
+            --color-accent-blue: #007AFF;
+            --color-text-secondary: #6e6e73;
+            --color-card-bg: #FFFFFF;
+            --color-border: #E0E0E0;
+            --font-primary: 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+            --font-serif: Georgia, serif; /* For the quote */
+        }
+        /* Dark Mode variables */
+        body.dark-mode {
+            --color-background: #1C1C1E; /* Dark Gray for background */
+            --color-text-primary: #F2F2F7; /* Light Gray for primary text */
+            --color-text-secondary: #AEAEB2; /* Medium Gray for secondary text */
+            --color-card-bg: #2C2C2E; /* Slightly lighter dark gray for cards */
+            --color-border: #48484A; /* Darker gray for borders */
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            margin: 0;
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll from overflowing content */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        section {
+            padding: 8rem 0; /* More padding for spacious feel */
+            opacity: 0;
+            transform: translateY(40px); /* Larger initial translateY */
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Slower transition */
+            position: relative;
+        }
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            letter-spacing: -0.02em; /* Tighter for Apple feel */
+        }
+        h1 { font-size: 4.5rem; text-align: center; line-height: 1.05; }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 2rem; }
+        h3 { font-size: 2rem; margin-bottom: 1.25rem; }
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at top left, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                        var(--color-background); /* Subtle light blobs */
+            padding: 2rem;
+            animation: fadeIn 2s ease-out forwards;
+        }
+        #hero h1 {
+            font-size: 5rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+        }
+        #hero p {
+            font-size: 1.75rem;
+            max-width: 900px;
+            margin-bottom: 4rem;
+            color: var(--color-text-secondary);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .scroll-indicator span {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.75rem;
+            animation: pulse 2s infinite;
+        }
+        .scroll-indicator .arrow {
+            font-size: 2rem;
+            color: var(--color-text-secondary);
+            animation: bounce 1.5s infinite;
+        }
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 3.5rem; }
+            #hero p { font-size: 1.25rem; }
+        }
+
+        /* Floating CTA Navbar */
+        #floating-cta-navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(-100%); /* Start off-screen */
+            transition: transform 0.3s ease-out;
+        }
+        #floating-cta-navbar.is-visible {
+            transform: translateY(0%); /* Slide in */
+        }
+        body.dark-mode #floating-cta-navbar {
+            background-color: rgba(44, 44, 46, 0.9); /* Dark mode semi-transparent */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        #floating-cta-navbar .logo {
+            font-weight: 700;
+            color: var(--color-text-primary);
+            font-size: 1.25rem;
+        }
+        #floating-cta-navbar .nav-buttons button, #floating-cta-navbar .nav-buttons a {
+            background: none;
+            border: none;
+            color: var(--color-text-primary);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        #floating-cta-navbar .nav-buttons button:hover, #floating-cta-navbar .nav-buttons a:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        body.dark-mode #floating-cta-navbar .nav-buttons button:hover, body.dark-mode #floating-cta-navbar .nav-buttons a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .mode-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-text-primary);
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        .mode-toggle:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        body.dark-mode .mode-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Card Grid (Key Findings) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        @media (min-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .data-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+            padding: 3rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .data-card:hover {
+            transform: translateY(-8px); /* Deeper lift on hover */
+        }
+        .data-card .stat {
+            font-size: 4.5rem; /* Larger stat */
+            font-weight: 800;
+            color: var(--color-accent-blue);
+            margin-bottom: 0.75rem;
+            line-height: 1;
+        }
+        .data-card .description {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        /* Icon Grid (What is Doomscrolling?) */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .icon-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .icon-item {
+            background-color: var(--color-card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-item .icon {
+            font-size: 4rem; /* Larger icons */
+            margin-bottom: 1rem;
+        }
+        .icon-item .label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* Split Layout (Platforms vs. People) */
+        .split-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 0; /* No gap directly, controlled by children */
+            margin-top: 3rem;
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden; /* For border radius */
+        }
+        @media (min-width: 992px) {
+            .split-layout {
+                flex-direction: row;
+                min-height: 600px; /* Ensure content height */
+            }
+        }
+        .split-column {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start; /* Default align */
+        }
+        .split-column:first-child {
+            border-bottom: 1px solid var(--color-border); /* Separator for mobile */
+        }
+        @media (min-width: 992px) {
+            .split-column:first-child {
+                border-right: 1px solid var(--color-border); /* Vertical separator */
+                border-bottom: none;
+            }
+        }
+        .split-column h3 {
+            text-align: left;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-primary);
+            font-size: 1.75rem;
+        }
+        .split-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .split-column li {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--color-text-secondary);
+        }
+        .split-column li::before {
+            content: '→'; /* Unicode arrow */
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+        .split-column.user-consequences li::before {
+            content: '⚠️'; /* Unicode warning */
+            color: #FD6B6B; /* A subtle red */
+        }
+
+        /* Headline Reframer Section */
+        #headline-reframer {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem; /* Add some space from previous section */
+        }
+        #headline-reframer textarea {
+            width: 100%;
+            height: 100px;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+            resize: vertical;
+            background-color: var(--color-background); /* Match background */
+        }
+        #headline-reframer button {
+            background-color: var(--color-accent-blue);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 9999px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        #headline-reframer button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+        #headline-reframer #reframed-headline {
+            margin-top: 2rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            min-height: 2.5rem; /* Ensure space even when empty */
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--color-accent-blue);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Digital Well-being Tools Section */
+        #wellbeing-tools .tool-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        #wellbeing-tools .tool-card:hover {
+            transform: translateY(-8px);
+        }
+        #wellbeing-tools .tool-card h3 {
+            color: var(--color-accent-blue);
+        }
+        #wellbeing-tools .slider-container {
+            margin-top: 1.5rem;
+            text-align: left;
+            padding: 0 1rem;
+        }
+        #wellbeing-tools input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            background: var(--color-border);
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        #wellbeing-tools input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-accent-blue);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #wellbeing-tools input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-accent-blue);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #wellbeing-tools #fatigue-risk-output {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        #wellbeing-tools .risk-low { color: #28A745; } /* Green */
+        #wellbeing-tools .risk-medium { color: #FFC107; } /* Yellow */
+        #wellbeing-tools .risk-high { color: #DC3545; } /* Red */
+
+        /* AI Companion Cards */
+        .ai-companion-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+        }
+        @media (min-width: 768px) {
+            .ai-companion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .ai-companion-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        .ai-companion-card .icon {
+            font-size: 3.5rem;
+            color: var(--color-accent-blue);
+            flex-shrink: 0;
+        }
+        .ai-companion-card .content h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+        }
+        .ai-companion-card .content p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+
+        /* Timeline / Metaphor */
+        .timeline-wrapper {
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            position: relative; /* For scrollbar styling */
+        }
+        .timeline-wrapper::-webkit-scrollbar {
+            height: 8px;
+            background-color: var(--color-border);
+            border-radius: 4px;
+        }
+        .timeline-wrapper::-webkit-scrollbar-thumb {
+            background-color: var(--color-accent-blue);
+            border-radius: 4px;
+        }
+        .timeline-inner {
+            display: flex;
+            white-space: nowrap;
+            gap: 4rem;
+            padding: 0 20vw;
+        }
+        .timeline-item {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            width: 280px;
+            opacity: 0.4;
+            transition: opacity 0.6s ease-out;
+        }
+        .timeline-item.active-scroll {
+            opacity: 1;
+        }
+        .timeline-item-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: var(--color-accent-blue);
+        }
+        .timeline-item-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .timeline-item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 0.75rem;
+        }
+        .timeline-item-description {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Solutions as Feature Cards */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        @media (min-width: 768px) {
+            .solution-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .solution-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .solution-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            height: 100%; /* Ensure cards are same height in grid */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .solution-card:hover {
+            transform: translateY(-8px);
+        }
+        .solution-card .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-accent-blue);
+        }
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            line-height: 1.3;
+        }
+        .solution-card p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            flex-grow: 1; /* Make paragraphs take available space */
+        }
+
+        /* Final Manifesto Section */
+        #manifesto {
+            background-color: var(--color-accent-blue);
+            color: var(--color-card-bg);
+            text-align: center;
+            padding: 8rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 4rem;
+            box-shadow: 0 12px 36px rgba(0, 122, 255, 0.2);
+            position: relative; /* For the floating quote effect */
+            overflow: hidden; /* For background effect */
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.9) 0%, rgba(0, 100, 200, 0.9) 100%),
+                        radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+        #manifesto .quote {
+            font-family: var(--font-serif); /* Serif font for quote */
+            font-size: 3.5rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: var(--color-card-bg);
+            position: relative;
+            z-index: 10;
+        }
+        #manifesto .subtext {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-card-bg);
+            color: var(--color-accent-blue);
+            padding: 1rem 2.5rem;
+            border-radius: 9999px; /* Pill shape */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        .cta-button:hover {
+            background-color: #E0E0E0;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 2.8rem; }
+            #hero p { font-size: 1.1rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.5rem; }
+            .data-card .stat { font-size: 3rem; }
+            .data-card .description { font-size: 1rem; }
+            .icon-item .icon { font-size: 3rem; }
+            .timeline-item { width: 220px; }
+            .timeline-item-icon { font-size: 4rem; }
+            .timeline-item-year { font-size: 1.2rem; }
+            .timeline-item-title { font-size: 1rem; }
+            .solution-card .icon { font-size: 3rem; }
+            .solution-card h3 { font-size: 1.25rem; }
+            #manifesto .quote { font-size: 2rem; }
+            #manifesto .subtext { font-size: 1.1rem; }
+        }
+
+    </style>
 </head>
 <body>
-  <header>
-    <h1>The Cost of Infinite Scroll</h1>
-    <p>Reframing Digital Engagement Through Strategic Marketing & Design</p>
-  </header>
 
-  <section class="section">
-    <h2>Unveiling the Hidden Costs</h2>
-    <p>The pursuit of endless engagement has measurable impacts. Here are core findings from our meta-analysis.</p>
-    <div class="cards">
-      <div class="card">
-        <div class="big">9x</div>
-        <p>more likely to report acute stress after 6+ hours of negative media exposure</p>
-      </div>
-      <div class="card">
-        <div class="big">+2.3%</div>
-        <p>increase in CTR per additional negative word in headlines</p>
-      </div>
-      <div class="card">
-        <div class="big">~55 min</div>
-        <p>average session time on TikTok-like platforms due to infinite feeds</p>
-      </div>
-    </div>
-  </section>
+    <!-- Floating CTA Navbar -->
+    <nav id="floating-cta-navbar" class="hidden">
+        <span class="logo">The Digital Dilemma</span>
+        <div class="nav-buttons">
+            <a href="#key-findings">Insights</a>
+            <a href="#solutions">Solutions</a>
+            <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf">Download PDF</a>
+            <button id="mode-toggle" class="mode-toggle">💡</button>
+        </div>
+    </nav>
 
-  <section class="section">
-    <h2>The Paradox: Designed for Engagement, Experienced as Exhaustion</h2>
-    <div class="cards">
-      <div class="card">
-        <strong>Platform Tactics</strong>
-        <ul>
-          <li>Infinite Scroll</li>
-          <li>Push Notifications</li>
-          <li>Negative Algorithmic Headlines</li>
-        </ul>
-      </div>
-      <div class="card">
-        <strong>User Impacts</strong>
-        <ul>
-          <li>Anxiety & Cognitive Burnout</li>
-          <li>Reduced Trust & Autonomy</li>
-          <li>Silent Churn</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>The Cost of Infinite Scroll</h1>
+            <p>How Platforms Trade Well-being for Engagement: Re-aligning Product Design with User Well-being in the Attention Economy.</p>
+            <a href="#key-findings" class="scroll-indicator">
+                <span>Discover More</span>
+                <div class="arrow">↓</div>
+            </a>
+        </div>
+    </section>
 
-  <section class="section">
-    <h2>From 1984 to IO: A Tech Ethics Timeline</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <h3>1984</h3>
-        <p>Apple's vision of tech as liberation</p>
-      </div>
-      <div class="timeline-item">
-        <h3>2006+</h3>
-        <p>Rise of addictive UX and infinite scroll</p>
-      </div>
-      <div class="timeline-item">
-        <h3>2023+</h3>
-        <p>IO by Altman & Ive: rethinking humane interface</p>
-      </div>
-    </div>
-  </section>
+    <main>
+        <!-- Key Findings Section -->
+        <section id="key-findings" class="container">
+            <h2>Unveiling the Hidden Costs</h2>
+            <p>The pursuit of endless engagement has tangible, measurable impacts on users and brands alike. Here are the core insights from our meta-analysis.</p>
+            <div class="card-grid">
+                <div class="data-card">
+                    <div class="stat">9x</div>
+                    <div class="description">more likely to report high acute stress after 6+ hours of negative media exposure.</div>
+                </div>
+                <div class="data-card">
+                    <div class="stat">+2.3%</div>
+                    <div class="description">increase in Click-Through Rate for each additional negative word in a headline.</div>
+                </div>
+                <div class="data-card">
+                    <div class="stat">~55 min</div>
+                    <div class="description">average daily session duration on platforms like TikTok, fueled by hyper-optimized, endless feeds.</div>
+                </div>
+            </div>
+        </section>
 
-  <section class="section">
-    <h2>Pioneering a Human-Centered Design Future</h2>
-    <div class="cards">
-      <div class="card">
-        <strong>📊 Digital Fatigue Index</strong>
-        <p>Track user distress & personalize recovery interventions</p>
-      </div>
-      <div class="card">
-        <strong>🤖 AI Companions</strong>
-        <p>Supportive, emotional UX layers that prioritize well-being</p>
-      </div>
-      <div class="card">
-        <strong>🛑 Friction & Breaks</strong>
-        <p>Interruptive design to reduce compulsive scrolling</p>
-      </div>
-      <div class="card">
-        <strong>🧘 Mindful Mode</strong>
-        <p>Low-stimulation experiences that restore control</p>
-      </div>
-    </div>
-  </section>
+        <!-- What is Doomscrolling? Section -->
+        <section id="what-is-doomscrolling" class="container">
+            <h2>Doomscrolling: More Than Just a Bad Habit</h2>
+            <p>It's the compulsive, often mindless, consumption of distressing content, reinforced by platform design, with profound consequences for mental and cognitive health.</p>
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <span class="icon">😟</span>
+                    <span class="label">Increased Stress & Anxiety</span>
+                </div>
+                <div class="icon-item">
+                    <span class="icon">😴</span>
+                    <span class="label">Sleep Disruption</span>
+                </div>
+                <div class="icon-item">
+                    <span class="icon">🧠</span>
+                    <span class="label">Cognitive Overload</span>
+                </div>
+                <div class="icon-item">
+                    <span class="icon">🔄</span>
+                    <span class="label">Compulsive Behavior</span>
+                </div>
+            </div>
+            <p class="text-center" style="font-size: 0.9rem; margin-top: 2rem;">Source: Meta-analysis of 40+ peer-reviewed studies (2015-2024)</p>
+        </section>
 
-  <footer>
-    <h2>“The future of marketing is emotionally aware.”</h2>
-    <p>Download the full PDF research paper below and join the movement toward sustainable attention design.</p>
-    <a class="button" href="yourfile.pdf" download>Download PDF</a>
-    <p>&copy; 2025 The Digital Dilemma Research. Built for academic dialogue and future-forward design in ethical engagement.</p>
-  </footer>
+        <!-- Split Section: Platforms vs. People -->
+        <section id="platforms-vs-people" class="container">
+            <h2>The Paradox: Designed for Engagement, Experienced as Exhaustion</h2>
+            <p>A closer look reveals the deliberate tension between platform objectives and human well-being.</p>
+            <div class="split-layout">
+                <div class="split-column platform-design">
+                    <h3>How Platforms Design for Engagement</h3>
+                    <ul>
+                        <li>Infinite Scroll: Eliminates stopping points, fostering endless consumption.</li>
+                        <li>Push Notifications: Creates FOMO and urgency, driving compulsive re-engagement.</li>
+                        <li>Algorithmic Headlines: Prioritizes sensational, negative content for higher CTR.</li>
+                        <li>Hyper-Personalized Feeds: Creates "reality bubbles," reinforcing biases.</li>
+                        <li>Sensory Overload: Overwhelms cognitive processing with rapid visuals and sounds.</li>
+                        <li>Decision Fatigue: Constant micro-choices exhaust mental energy, hindering disengagement.</li>
+                    </ul>
+                </div>
+                <div class="split-column user-consequences">
+                    <h3>What Users Feel (The Ethical Cost)</h3>
+                    <ul>
+                        <li>Heightened Anxiety: Spikes stress hormones, worsening mental health.</li>
+                        <li>Digital Burnout: Exhaustion from constant cognitive and emotional load.</li>
+                        <li>Erosion of Trust: Skepticism towards platforms, leading to brand distrust.</li>
+                        <li>Reduced Autonomy: Feeling trapped in a compulsive engagement loop.</li>
+                        <li>Silent Churn: Gradual disengagement due to fatigue, impacting long-term loyalty.</li>
+                        <li>Societal Polarization: Reinforcement of biases within "echo chambers."</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Headline Reframer Section (LLM-powered) -->
+        <section id="headline-reframer" class="container">
+            <h2>Reframing the Narrative ✨</h2>
+            <p>Experience how a headline can be transformed. Input a negative headline and see an AI-generated, more balanced, yet informative alternative.</p>
+            <textarea id="headline-input" placeholder="Enter a negative headline here... e.g., 'Economic Collapse Imminent: Stocks Plummet, Experts Warn of Crisis'"></textarea>
+            <button id="reframing-button">Reframewith ✨AI</button>
+            <div id="loading-spinner" class="loading-spinner"></div>
+            <p id="reframed-headline" class="text-xl font-semibold text-center"></p>
+            <p class="text-sm text-gray-500 mt-4">Powered by Gemini AI (gemini-2.0-flash).</p>
+        </section>
+
+        <!-- Digital Well-being Tools Section -->
+        <section id="wellbeing-tools" class="container">
+            <h2>Your Digital Well-being Navigator</h2>
+            <p>Proactive tools and emotionally intelligent design can help you manage digital fatigue and foster healthier engagement.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="tool-card">
+                    <h3>Assess Your Fatigue Risk</h3>
+                    <p>Input your typical daily session length and perceived negative content exposure to estimate your burnout risk.</p>
+                    <div class="slider-container">
+                        <label for="session-length" class="block text-left text-sm font-semibold mb-2">Daily Session Length (hours): <span id="session-length-value">1</span></label>
+                        <input type="range" id="session-length" min="0" max="8" value="1" step="0.5">
+                    </div>
+                    <div class="slider-container mt-4">
+                        <label for="negative-exposure" class="block text-left text-sm font-semibold mb-2">Negative Content Exposure (1-5): <span id="negative-exposure-value">1</span></label>
+                        <input type="range" id="negative-exposure" min="1" max="5" value="1" step="1">
+                    </div>
+                    <div id="fatigue-risk-output" class="mt-4">Risk: Low</div>
+                </div>
+
+                <div class="tool-card">
+                    <h3>AI Companions in Action</h3>
+                    <p>Imagine AI designed to support your mental state, not just maximize screen time. Here are examples of how they might interact.</p>
+                    <div class="ai-companion-grid">
+                        <div class="ai-companion-card">
+                            <span class="icon">💬</span>
+                            <div class="content">
+                                <h4>Proactive Nudge</h4>
+                                <p>AI: "You've been engaging with intense news for a while. Would you like a short break or a calming story?"</p>
+                            </div>
+                        </div>
+                        <div class="ai-companion-card">
+                            <span class="icon">📈</span>
+                            <div class="content">
+                                <h4>Fatigue Feedback</h4>
+                                <p>AI: "Based on your activity, your digital fatigue level is moderate. Perhaps a mindful minute would help?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Timeline / Metaphor -->
+        <section id="timeline-metaphor" class="container">
+            <h2>From 1984 to IO: Charting the Ethical Shift in Tech</h2>
+            <p>Technology's promise has evolved from liberation to subtle control. A new paradigm is emerging to reclaim its human-centric purpose.</p>
+            <div class="timeline-wrapper">
+                <div class="timeline-inner">
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">📺</span>
+                        <div class="timeline-item-year">1984</div>
+                        <div class="timeline-item-title">Apple's Liberation Vision</div>
+                        <p class="timeline-item-description">Macintosh challenges "Big Brother," symbolizing technology as a force for freedom and individual empowerment.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">♾️</span>
+                        <div class="timeline-item-year">2006+</div>
+                        <div class="timeline-item-title">Rise of Addictive Design</div>
+                        <p class="timeline-item-description">Infinite scroll, push notifications, and engagement-optimized algorithms dominate, prioritizing time-on-site over well-being.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">🤯</span>
+                        <div class="timeline-item-year">2010s</div>
+                        <div class="timeline-item-title">Doomscrolling Epidemic</div>
+                        <p class="timeline-item-description">Compulsive consumption of negative content becomes widespread, revealing the human cost of unbridled engagement.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">💬</span>
+                        <div class="timeline-item-year">2023+</div>
+                        <div class="timeline-item-title">Altman + Jony Ive IO Device</div>
+                        <p class="timeline-item-description">A screen-free, AI-driven wearable designed to "wean users away from screens," signaling a philosophical shift towards humane tech.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <span class="timeline-item-icon">✨</span>
+                        <div class="timeline-item-year">Future</div>
+                        <div class="timeline-item-title">Emotionally Aware Platforms</div>
+                        <p class="timeline-item-description">The imperative for marketing to align with user well-being, fostering sustainable engagement and rebuilding trust through ethical design.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solutions as Feature Cards -->
+        <section id="solutions" class="container">
+            <h2>Pioneering a Human-Centric Digital Future</h2>
+            <p>Moving from exploitation to empowerment requires a strategic pivot in product design and marketing. Here are key solutions for a healthier digital ecosystem.</p>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <span class="icon">📊</span>
+                    <h3>Digital Fatigue Index (DFI)</h3>
+                    <p>A new KPI to quantify user distress in real-time, leveraging digital biomarkers and AI for proactive, personalized interventions.</p>
+                </div>
+                <div class="solution-card">
+                    <span class="icon">🤖</span>
+                    <h3>AI Companions (Emotional UX)</h3>
+                    <p>Emotionally intelligent AI designed to augment human well-being, providing empathetic support and guiding users towards healthier digital habits.</p>
+                </div>
+                <div class="solution-card">
+                    <span class="icon">🛑</span>
+                    <h3>Personalized Friction & Breaks</h3>
+                    <p>Strategic, user-sensitive interruptions (e.g., "Are you still watching?" prompts) to break compulsive patterns and reintroduce mindful pauses.</p>
+                </div>
+                <div class="solution-card">
+                    <span class="icon">🧘‍♀️</span>
+                    <h3>Mindful Mode & Zero UI</h3>
+                    <p>Product features or screen-free interfaces that minimize cognitive load, allowing users to control their digital diet and reduce intrusive interactions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Manifesto Section -->
+        <section id="manifesto" class="container">
+            <div class="quote">“The future of marketing is emotionally aware.”</div>
+            <p class="subtext">Let’s design systems that empower, not exhaust. A call for a new era of digital products built on trust, well-being, and sustainable engagement.</p>
+            <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf" class="cta-button">Download the Full Research (PDF)</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 The Digital Dilemma Research. Crafted for the next wave of emotionally intelligent design and ethical product innovation.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper function to get CSS variables
+            const getCssVariable = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+            // Smooth scroll for hero button
+            document.querySelector('.scroll-indicator').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+            // Intersection Observer for scroll animations (fade-in/slide-up)
+            const sections = document.querySelectorAll('section:not(#hero)');
+            const observerOptions = {
+                root: null,
+                threshold: 0.15 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Optional: remove 'is-visible' if you want animations to repeat on scroll up
+                        // entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Floating CTA Navbar visibility
+            const floatingNavbar = document.getElementById('floating-cta-navbar');
+            const heroSection = document.getElementById('hero');
+
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        floatingNavbar.classList.remove('is-visible');
+                    } else {
+                        floatingNavbar.classList.add('is-visible');
+                    }
+                });
+            }, { rootMargin: "-100px 0px 0px 0px" }); // Show navbar once hero is largely out of view
+
+            heroObserver.observe(heroSection);
+
+            // Dark/Light Mode Toggle
+            const modeToggle = document.getElementById('mode-toggle');
+            modeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                // Store preference in localStorage
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    modeToggle.textContent = '☀️'; // Sun icon for light mode
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    modeToggle.textContent = '💡'; // Bulb icon for dark mode
+                }
+            });
+
+            // Apply saved theme on load
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                modeToggle.textContent = '☀️';
+            } else {
+                modeToggle.textContent = '💡';
+            }
+
+
+            // Horizontal Timeline Scroll and Active State
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            const updateTimelineActiveItem = () => {
+                const wrapperRect = timelineWrapper.getBoundingClientRect();
+                const wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
+
+                timelineItems.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    const itemCenter = itemRect.left + itemRect.width / 2;
+
+                    // Activate if item center is within the visible portion of the wrapper
+                    if (itemRect.left < wrapperRect.right && itemRect.right > wrapperRect.left) {
+                        item.classList.add('active-scroll');
+                    } else {
+                        item.classList.remove('active-scroll');
+                    }
+                });
+            };
+
+            timelineWrapper.addEventListener('scroll', updateTimelineActiveItem);
+            // Initial check on load
+            updateTimelineActiveItem();
+
+
+            // Gemini API Integration for Headline Reframer
+            const headlineInput = document.getElementById('headline-input');
+            const reframingButton = document.getElementById('reframing-button');
+            const reframedHeadlineOutput = document.getElementById('reframed-headline');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            reframingButton.addEventListener('click', async () => {
+                const prompt = headlineInput.value.trim();
+                if (!prompt) {
+                    reframedHeadlineOutput.textContent = "Please enter a headline to reframe.";
+                    return;
+                }
+
+                loadingSpinner.style.display = 'block';
+                reframingButton.disabled = true;
+                reframedHeadlineOutput.textContent = ''; // Clear previous output
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Check for successful response before parsing JSON
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                    }
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        reframedHeadlineOutput.textContent = text;
+                    } else {
+                        reframedHeadlineOutput.textContent = "Could not reframe the headline. Unexpected API response structure.";
+                        console.error("Unexpected API response structure:", result);
+                    }
+                } catch (error) {
+                    reframedHeadlineOutput.textContent = `Error: ${error.message}. Please try again later.`;
+                    console.error("Error calling Gemini API:", error);
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                    reframingButton.disabled = false;
+                }
+            });
+
+            // Emotional Fatigue Simulator
+            const sessionLengthInput = document.getElementById('session-length');
+            const negativeExposureInput = document.getElementById('negative-exposure');
+            const sessionLengthValueSpan = document.getElementById('session-length-value');
+            const negativeExposureValueSpan = document.getElementById('negative-exposure-value');
+            const fatigueRiskOutput = document.getElementById('fatigue-risk-output');
+
+            const calculateFatigueRisk = () => {
+                const sessionLength = parseFloat(sessionLengthInput.value); // hours
+                const negativeExposure = parseFloat(negativeExposureInput.value); // 1-5 scale
+
+                sessionLengthValueSpan.textContent = sessionLength;
+                negativeExposureValueSpan.textContent = negativeExposure;
+
+                let riskLevel = 'Low';
+                let riskClass = 'risk-low';
+
+                if (sessionLength >= 4 || negativeExposure >= 4) {
+                    riskLevel = 'High';
+                    riskClass = 'risk-high';
+                } else if (sessionLength >= 2 || negativeExposure >= 3) {
+                    riskLevel = 'Medium';
+                    riskClass = 'risk-medium';
+                }
+
+                fatigueRiskOutput.textContent = `Risk: ${riskLevel}`;
+                fatigueRiskOutput.className = ''; // Clear previous classes
+                fatigueRiskOutput.classList.add(riskClass);
+            };
+
+            sessionLengthInput.addEventListener('input', calculateFatigueRisk);
+            negativeExposureInput.addEventListener('input', calculateFatigueRisk);
+
+            // Initial calculation
+            calculateFatigueRisk();
+        });
+    </script>
 </body>
 </html>

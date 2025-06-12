@@ -3,406 +3,798 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infographic: The Attention Economy's Hidden Cost</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>The Cost of Infinite Scroll: A Research Manifesto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Chosen Palette: Brilliant Blues -->
-    <!-- Application Structure Plan: The infographic follows a 5-part narrative scroll. It starts with a hook ("The Attention Trap") to establish the core conflict. Section 2 ("The Human Cost") uses a radar chart to show the multifaceted psychological damage. Section 3 ("Engineered for Engagement") interactively deconstructs the platform-level causes using an accordion for dark patterns and a dynamic bar chart for headline bias. Section 4 ("The Business Fallout") uses a flow diagram to show the long-term negative business consequences. Finally, Section 5 ("The Path Forward") presents actionable solutions, organized into tabs. This structure tells a complete story, moving from problem to cause to effect to solution, making the complex topic digestible. -->
-    <!-- Visualization & Content Choices: 
-        - Behavioral Consequences (Table 1): Goal -> Compare. Viz -> Radar Chart (Chart.js/Canvas). Justification -> Effectively shows the multi-dimensional profile of psychological harm from a central point. All labels are wrapped and tooltips configured. No SVG.
-        - Negative Headline Bias (CTR Data): Goal -> Compare. Viz -> Interactive Bar Chart (Chart.js/Canvas) with a slider. Justification -> Makes the static 2.3% statistic dynamic and memorable, allowing users to see the compounding effect. No SVG.
-        - Platform Design Elements (Table 2): Goal -> Organize. Viz -> Interactive Accordion (HTML/CSS/JS). Justification -> A clean, user-driven way to explore detailed information without cluttering the UI. No SVG/Mermaid.
-        - Fatigue-to-Churn Process: Goal -> Organize/Show Change. Viz -> Flow Chart (HTML/Tailwind CSS). Justification -> Clearly visualizes the causal link from user fatigue to brand trust erosion and churn. No SVG/Mermaid.
-        - Future Pathways (Solutions): Goal -> Organize. Viz -> Tabbed Content (HTML/CSS/JS) with Unicode icons. Justification -> Neatly separates Product and Marketing strategies, providing actionable, role-based insights. No SVG.
+    <!-- Chosen Palette: Humane Harmony (Background: #FAFAFA, Primary Text: #111111, Accent: #007AFF, Secondary Text: #6e6e73, Card Background: #FFFFFF) -->
+    <!-- Application Structure Plan: The site uses a scrollytelling narrative:
+        1. Hero: Bold statement, sets the stage.
+        2. Key Findings: Introduces core stats with Apple-style data cards.
+        3. What is Doomscrolling?: Defines the behavior and its psychological symptoms via an icon grid.
+        4. Platforms vs. People: A split layout to contrast platform design goals with user consequences.
+        5. Reframing the Narrative ✨: An LLM-powered tool to transform negative headlines.
+        6. Ethical Shift Timeline: A horizontal timeline mapping the evolution of tech ethics.
+        7. Solutions as Feature Cards: Presents actionable design solutions with a product-launch feel.
+        8. Final Manifesto: Concludes with a powerful quote and call to action.
+        This structure builds a narrative from problem to solution, aiming for a "manifesto" feel.
     -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- Visualization & Content Choices:
+        - Key Findings: Goal -> Inform. Viz -> Data Cards (HTML/CSS). Justification -> Clean, impactful presentation of key numbers. No SVG.
+        - What is Doomscrolling?: Goal -> Inform/Organize. Viz -> Icon Grid (HTML/CSS with Unicode icons). Justification -> Quick, visual summary of effects. No SVG.
+        - Platforms vs. People: Goal -> Compare/Explain. Viz -> Split Layout with lists (HTML/CSS). Justification -> Clearly contrasts two perspectives side-by-side. No SVG.
+        - Reframing the Narrative ✨: Goal -> Interact/Demonstrate. Viz -> Textarea, button, and response div (HTML/CSS + JS with Gemini API call). Justification -> Directly engages users with the "negative headline bias" concept and showcases an AI-powered solution. No SVG.
+        - Ethical Shift Timeline: Goal -> Show Change/Organize. Viz -> Horizontal Timeline (HTML/CSS + minimal JS for horizontal scroll). Justification -> Visually narrates the historical progression of tech ethics. Uses stylized Unicode icons for markers. No SVG.
+        - Solutions as Feature Cards: Goal -> Organize/Inform. Viz -> Product Feature Cards (HTML/CSS). Justification -> Presents solutions in a polished, actionable, and product-like manner. No SVG.
+        - All sections use CSS for fade-in/slide-up animations via IntersectionObserver.
+    -->
 
     <style>
+        :root {
+            --color-background: #FAFAFA;
+            --color-text-primary: #111111;
+            --color-accent-blue: #007AFF;
+            --color-text-secondary: #6e6e73;
+            --color-card-bg: #FFFFFF;
+            --color-border: #E0E0E0;
+            --font-primary: 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+            --font-serif: Georgia, serif; /* For the quote */
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0A192F; /* Deep Navy Blue */
-            color: #CCD6F6; /* Light Blue-Gray text */
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            margin: 0;
+            scroll-behavior: smooth;
+            overflow-x: hidden; /* Prevent horizontal scroll from overflowing content */
         }
-        .section-title {
-            color: #64FFDA; /* Mint Green accent */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
-        .card {
-            background-color: #112240; /* Lighter Navy */
-            border: 1px solid #233554;
-        }
-        .highlight-stat {
-            color: #64FFDA;
-            font-weight: 800;
-        }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-        .tab-button.active {
-            color: #64FFDA;
-            border-bottom-color: #64FFDA;
-        }
-        .chart-container {
+        section {
+            padding: 8rem 0; /* More padding for spacious feel */
+            opacity: 0;
+            transform: translateY(40px); /* Larger initial translateY */
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Slower transition */
             position: relative;
-            width: 100%;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
+        }
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            letter-spacing: -0.02em; /* Tighter for Apple feel */
+        }
+        h1 { font-size: 4.5rem; text-align: center; line-height: 1.05; }
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 2rem; }
+        h3 { font-size: 2rem; margin-bottom: 1.25rem; }
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text-secondary);
+            font-size: 1.125rem;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at top left, rgba(0, 122, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.9) 0%, transparent 50%),
+                        var(--color-background); /* Subtle light blobs */
+            padding: 2rem;
+            animation: fadeIn 2s ease-out forwards;
+        }
+        #hero h1 {
+            font-size: 5rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+        }
+        #hero p {
+            font-size: 1.75rem;
+            max-width: 900px;
+            margin-bottom: 4rem;
+            color: var(--color-text-secondary);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .scroll-indicator span {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 0.75rem;
+            animation: pulse 2s infinite;
+        }
+        .scroll-indicator .arrow {
+            font-size: 2rem;
+            color: var(--color-text-secondary);
+            animation: bounce 1.5s infinite;
+        }
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 3.5rem; }
+            #hero p { font-size: 1.25rem; }
+        }
+
+        /* Card Grid (Key Findings) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
         @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
+        .data-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+            padding: 3rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .data-card:hover {
+            transform: translateY(-8px); /* Deeper lift on hover */
+        }
+        .data-card .stat {
+            font-size: 4.5rem; /* Larger stat */
+            font-weight: 800;
+            color: var(--color-accent-blue);
+            margin-bottom: 0.75rem;
+            line-height: 1;
+        }
+        .data-card .description {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        /* Icon Grid (What is Doomscrolling?) */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .icon-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .icon-item {
+            background-color: var(--color-card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-item .icon {
+            font-size: 4rem; /* Larger icons */
+            margin-bottom: 1rem;
+        }
+        .icon-item .label {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* Split Layout (Platforms vs. People) */
+        .split-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 0; /* No gap directly, controlled by children */
+            margin-top: 3rem;
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden; /* For border radius */
+        }
+        @media (min-width: 992px) {
+            .split-layout {
+                flex-direction: row;
+                min-height: 600px; /* Ensure content height */
+            }
+        }
+        .split-column {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start; /* Default align */
+        }
+        .split-column:first-child {
+            border-bottom: 1px solid var(--color-border); /* Separator for mobile */
+        }
+        @media (min-width: 992px) {
+            .split-column:first-child {
+                border-right: 1px solid var(--color-border); /* Vertical separator */
+                border-bottom: none;
+            }
+        }
+        .split-column h3 {
+            text-align: left;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-primary);
+            font-size: 1.75rem;
+        }
+        .split-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .split-column li {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--color-text-secondary);
+        }
+        .split-column li::before {
+            content: '→'; /* Unicode arrow */
+            position: absolute;
+            left: 0;
+            color: var(--color-accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+        .split-column.user-consequences li::before {
+            content: '⚠️'; /* Unicode warning */
+            color: #FD6B6B; /* A subtle red */
+        }
+
+        /* Headline Reframer Section */
+        #headline-reframer {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem; /* Add some space from previous section */
+        }
+        #headline-reframer textarea {
+            width: 100%;
+            height: 100px;
+            padding: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            color: var(--color-text-primary);
+            margin-bottom: 1.5rem;
+            resize: vertical;
+        }
+        #headline-reframer button {
+            background-color: var(--color-accent-blue);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 9999px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        #headline-reframer button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+        #headline-reframer #reframed-headline {
+            margin-top: 2rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            min-height: 2.5rem; /* Ensure space even when empty */
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--color-accent-blue);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Timeline / Metaphor */
+        .timeline-wrapper {
+            overflow-x: scroll; /* Enable horizontal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            scroll-snap-type: x mandatory; /* Snap to items */
+            padding: 2rem 0; /* Vertical padding */
+            margin-top: 3rem;
+        }
+        .timeline-inner {
+            display: flex;
+            white-space: nowrap; /* Keep items in a single line */
+            gap: 4rem; /* Spacing between items */
+            padding: 0 20vw; /* Padding to center items at ends */
+        }
+        .timeline-item {
+            display: inline-flex; /* For horizontal layout */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            scroll-snap-align: center; /* Snap to center */
+            flex-shrink: 0; /* Prevent shrinking */
+            width: 280px; /* Fixed width for each item */
+            opacity: 0.4; /* Default opacity */
+            transition: opacity 0.6s ease-out;
+        }
+        .timeline-item.active-scroll {
+            opacity: 1; /* Active item is fully visible */
+        }
+        .timeline-item-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: var(--color-accent-blue);
+        }
+        .timeline-item-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .timeline-item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 0.75rem;
+        }
+        .timeline-item-description {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Solutions as Feature Cards */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        @media (min-width: 768px) {
+            .solution-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .solution-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .solution-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+            height: 100%; /* Ensure cards are same height in grid */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .solution-card:hover {
+            transform: translateY(-8px);
+        }
+        .solution-card .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-accent-blue);
+        }
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+            line-height: 1.3;
+        }
+        .solution-card p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            flex-grow: 1; /* Make paragraphs take available space */
+        }
+
+        /* Final Manifesto Section */
+        #manifesto {
+            background-color: var(--color-accent-blue);
+            color: var(--color-card-bg);
+            text-align: center;
+            padding: 8rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 4rem;
+            box-shadow: 0 12px 36px rgba(0, 122, 255, 0.2);
+            position: relative; /* For the floating quote effect */
+            overflow: hidden; /* For background effect */
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.9) 0%, rgba(0, 100, 200, 0.9) 100%),
+                        radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+        #manifesto .quote {
+            font-family: var(--font-serif); /* Serif font for quote */
+            font-size: 3.5rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            color: var(--color-card-bg);
+            position: relative;
+            z-index: 10;
+        }
+        #manifesto .subtext {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--color-card-bg);
+            color: var(--color-accent-blue);
+            padding: 1rem 2.5rem;
+            border-radius: 9999px; /* Pill shape */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        .cta-button:hover {
+            background-color: #E0E0E0;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 2.8rem; }
+            #hero p { font-size: 1.1rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.5rem; }
+            .data-card .stat { font-size: 3rem; }
+            .data-card .description { font-size: 1rem; }
+            .icon-item .icon { font-size: 3rem; }
+            .timeline-item { width: 220px; }
+            .timeline-item-icon { font-size: 4rem; }
+            .timeline-item-year { font-size: 1.2rem; }
+            .timeline-item-title { font-size: 1rem; }
+            .solution-card .icon { font-size: 3rem; }
+            .solution-card h3 { font-size: 1.25rem; }
+            #manifesto .quote { font-size: 2rem; }
+            #manifesto .subtext { font-size: 1.1rem; }
+        }
+
     </style>
 </head>
-<body class="antialiased leading-relaxed">
+<body>
 
-    <div class="container mx-auto px-6 py-12 md:py-20">
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <h1>The Cost of Infinite Scroll</h1>
+            <p>How Platforms Trade Well-being for Engagement: Re-aligning Product Design with User Well-being in the Attention Economy.</p>
+            <a href="#key-findings" class="scroll-indicator">
+                <span>Discover More</span>
+                <div class="arrow">↓</div>
+            </a>
+        </div>
+    </section>
 
-        <!-- Section 1: The Attention Trap -->
-        <section class="text-center mb-20 md:mb-32">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">The Attention Trap</h1>
-            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-400">Digital platforms are designed to maximize engagement. But what happens when that engagement comes at the cost of our well-being? This is the story of doomscrolling—not as a personal failure, but as a strategic design choice.</p>
+    <main>
+        <!-- Key Findings Section -->
+        <section id="key-findings" class="container">
+            <h2>Unveiling the Hidden Costs</h2>
+            <p>The pursuit of endless engagement has tangible, measurable impacts on users and brands alike. Here are the core insights from our meta-analysis.</p>
+            <div class="card-grid">
+                <div class="data-card">
+                    <div class="stat">9x</div>
+                    <div class="description">more likely to report high acute stress after 6+ hours of negative media exposure.</div>
+                </div>
+                <div class="data-card">
+                    <div class="stat">+2.3%</div>
+                    <div class="description">increase in Click-Through Rate for each additional negative word in a headline.</div>
+                </div>
+                <div class="data-card">
+                    <div class="stat">~55 min</div>
+                    <div class="description">average daily session duration on platforms like TikTok, fueled by hyper-optimized, endless feeds.</div>
+                </div>
+            </div>
         </section>
 
-        <!-- Section 2: The Human Cost -->
-        <section class="mb-20 md:mb-32">
-            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Human Cost of Compulsive Scrolling</h2>
-            <div class="grid md:grid-cols-5 gap-8 items-center">
-                <div class="md:col-span-2 text-center md:text-left">
-                    <h3 class="text-2xl font-bold text-white mb-4">A Profile of Digital Burnout</h3>
-                    <p class="text-slate-400 mb-6">The relentless consumption of negative content has measurable, detrimental effects on mental and physical health. It's not just "feeling down"—it's a pattern of cognitive and emotional erosion.</p>
-                    <div class="card rounded-lg p-6 text-center">
-                        <p class="text-slate-300">After the Boston Marathon bombing, those with 6+ hours of media exposure were</p>
-                        <p class="text-6xl md:text-7xl highlight-stat my-2">9x</p>
-                        <p class="text-slate-300">more likely to report high acute stress.</p>
-                    </div>
+        <!-- What is Doomscrolling? Section -->
+        <section id="what-is-doomscrolling" class="container">
+            <h2>Doomscrolling: More Than Just a Bad Habit</h2>
+            <p>It's the compulsive, often mindless, consumption of distressing content, reinforced by platform design, with profound consequences for mental and cognitive health.</p>
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <span class="icon">😟</span>
+                    <span class="label">Increased Stress & Anxiety</span>
                 </div>
-                <div class="md:col-span-3 card rounded-lg p-6">
-                    <div class="chart-container">
-                        <canvas id="consequencesChart"></canvas>
+                <div class="icon-item">
+                    <span class="icon">😴</span>
+                    <span class="label">Sleep Disruption</span>
+                </div>
+                <div class="icon-item">
+                    <span class="icon">🧠</span>
+                    <span class="label">Cognitive Overload</span>
+                </div>
+                <div class="icon-item">
+                    <span class="icon">🔄</span>
+                    <span class="label">Compulsive Behavior</span>
+                </div>
+            </div>
+            <p class="text-center" style="font-size: 0.9rem; margin-top: 2rem;">Source: Meta-analysis of 40+ peer-reviewed studies (2015-2024)</p>
+        </section>
+
+        <!-- Split Section: Platforms vs. People -->
+        <section id="platforms-vs-people" class="container">
+            <h2>The Paradox: Designed for Engagement, Experienced as Exhaustion</h2>
+            <p>A closer look reveals the deliberate tension between platform objectives and human well-being.</p>
+            <div class="split-layout">
+                <div class="split-column platform-design">
+                    <h3>How Platforms Design for Engagement</h3>
+                    <ul>
+                        <li>Infinite Scroll: Eliminates stopping points, fostering endless consumption.</li>
+                        <li>Push Notifications: Creates FOMO and urgency, driving compulsive re-engagement.</li>
+                        <li>Algorithmic Headlines: Prioritizes sensational, negative content for higher CTR.</li>
+                        <li>Hyper-Personalized Feeds: Creates "reality bubbles," reinforcing biases.</li>
+                        <li>Sensory Overload: Overwhelms cognitive processing with rapid visuals and sounds.</li>
+                        <li>Decision Fatigue: Constant micro-choices exhaust mental energy, hindering disengagement.</li>
+                    </ul>
+                </div>
+                <div class="split-column user-consequences">
+                    <h3>What Users Feel (The Ethical Cost)</h3>
+                    <ul>
+                        <li>Heightened Anxiety: Spikes stress hormones, worsening mental health.</li>
+                        <li>Digital Burnout: Exhaustion from constant cognitive and emotional load.</li>
+                        <li>Erosion of Trust: Skepticism towards platforms, leading to brand distrust.</li>
+                        <li>Reduced Autonomy: Feeling trapped in a compulsive engagement loop.</li>
+                        <li>Silent Churn: Gradual disengagement due to fatigue, impacting long-term loyalty.</li>
+                        <li>Societal Polarization: Reinforcement of biases within "echo chambers."</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Headline Reframer Section (LLM-powered) -->
+        <section id="headline-reframer" class="container is-visible">
+            <h2>Reframing the Narrative ✨</h2>
+            <p>Experience how a headline can be transformed. Input a negative headline and see an AI-generated, more balanced, yet informative alternative.</p>
+            <textarea id="headline-input" placeholder="Enter a negative headline here... e.g., 'Economic Collapse Imminent: Stocks Plummet, Experts Warn of Crisis'"></textarea>
+            <button id="reframing-button">Reframewith ✨AI</button>
+            <div id="loading-spinner" class="loading-spinner"></div>
+            <p id="reframed-headline" class="text-xl font-semibold text-center"></p>
+            <p class="text-sm text-gray-500 mt-4">Powered by Gemini AI (gemini-2.0-flash).</p>
+        </section>
+
+
+        <!-- Timeline / Metaphor -->
+        <section id="timeline-metaphor" class="container">
+            <h2>From 1984 to IO: Charting the Ethical Shift in Tech</h2>
+            <p>Technology's promise has evolved from liberation to subtle control. A new paradigm is emerging to reclaim its human-centric purpose.</p>
+            <div class="timeline-wrapper">
+                <div class="timeline-inner">
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">📺</span>
+                        <div class="timeline-item-year">1984</div>
+                        <div class="timeline-item-title">Apple's Liberation Vision</div>
+                        <p class="timeline-item-description">Macintosh challenges "Big Brother," symbolizing technology as a force for freedom and individual empowerment.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">♾️</span>
+                        <div class="timeline-item-year">2006+</div>
+                        <div class="timeline-item-title">Rise of Addictive Design</div>
+                        <p class="timeline-item-description">Infinite scroll, push notifications, and engagement-optimized algorithms dominate, prioritizing time-on-site over well-being.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">🤯</span>
+                        <div class="timeline-item-year">2010s</div>
+                        <div class="timeline-item-title">Doomscrolling Epidemic</div>
+                        <p class="timeline-item-description">Compulsive consumption of negative content becomes widespread, revealing the human cost of unbridled engagement.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-item-icon">💬</span>
+                        <div class="timeline-item-year">2023+</div>
+                        <div class="timeline-item-title">Altman + Jony Ive IO Device</div>
+                        <p class="timeline-item-description">A screen-free, AI-driven wearable designed to "wean users away from screens," signaling a philosophical shift towards humane tech.</p>
+                    </div>
+                     <div class="timeline-item">
+                        <span class="timeline-item-icon">✨</span>
+                        <div class="timeline-item-year">Future</div>
+                        <div class="timeline-item-title">Emotionally Aware Platforms</div>
+                        <p class="timeline-item-description">The imperative for marketing to align with user well-being, fostering sustainable engagement and rebuilding trust through ethical design.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Engineered for Engagement -->
-        <section class="mb-20 md:mb-32">
-            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">Engineered for Engagement</h2>
-            <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">Doomscrolling isn't accidental. It's the result of "dark patterns"—deliberate UX choices designed to exploit our cognitive vulnerabilities and keep us hooked.</p>
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Accordion for Dark Patterns -->
-                <div class="card rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">The Anatomy of Addiction</h3>
-                    <p class="text-slate-400 mb-6">Click on each design element to see how it works.</p>
-                    <div id="dark-patterns-accordion" class="space-y-3"></div>
+        <!-- Solutions as Feature Cards -->
+        <section id="solutions" class="container">
+            <h2>Pioneering a Human-Centric Digital Future</h2>
+            <p>Moving from exploitation to empowerment requires a strategic pivot in product design and marketing. Here are key solutions for a healthier digital ecosystem.</p>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <span class="icon">📊</span>
+                    <h3>Digital Fatigue Index (DFI)</h3>
+                    <p>A new KPI to quantify user distress in real-time, leveraging digital biomarkers and AI for proactive, personalized interventions.</p>
                 </div>
-                <!-- Interactive Chart for Headline Bias -->
-                <div class="card rounded-lg p-6">
-                    <h3 class="text-2xl font-bold text-white mb-4">The Negativity Bonus</h3>
-                    <p class="text-slate-400 mb-4">Research shows negative words in headlines increase click-through rates (CTR) by 2.3% per word. Use the slider to see how negativity is rewarded.</p>
-                    <div class="chart-container">
-                        <canvas id="ctrChart"></canvas>
-                    </div>
-                     <div class="mt-4">
-                        <label for="negative-words-slider" class="font-medium text-slate-300">Number of Negative Words: <span id="slider-value" class="font-bold highlight-stat">1</span></label>
-                        <input id="negative-words-slider" type="range" min="0" max="10" value="1" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer mt-2">
-                    </div>
+                <div class="solution-card">
+                    <span class="icon">🤖</span>
+                    <h3>AI Companions (Emotional UX)</h3>
+                    <p>Emotionally intelligent AI designed to augment human well-being, providing empathetic support and guiding users towards healthier digital habits.</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- Section 4: The Business Fallout -->
-        <section class="mb-20 md:mb-32">
-            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Business Fallout: A Vicious Cycle</h2>
-            <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">Prioritizing short-term clicks over long-term loyalty creates a cascade of negative outcomes that ultimately harm the brand and the business.</p>
-            <div class="grid md:grid-cols-3 gap-8 text-center relative">
-                 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-700 hidden md:block"></div>
-                 <div class="absolute top-0 left-1/2 w-0.5 h-full bg-slate-700 md:hidden"></div>
-                <div class="card rounded-lg p-6 z-10">
-                    <h3 class="text-xl font-bold text-white mb-2">User Fatigue</h3>
-                    <p class="text-slate-400">Constant negative engagement leads to cognitive overload, stress, and widespread social media fatigue.</p>
+                <div class="solution-card">
+                    <span class="icon">🛑</span>
+                    <h3>Personalized Friction & Breaks</h3>
+                    <p>Strategic, user-sensitive interruptions (e.g., "Are you still watching?" prompts) to break compulsive patterns and reintroduce mindful pauses.</p>
                 </div>
-                 <div class="card rounded-lg p-6 z-10">
-                    <h3 class="text-xl font-bold text-white mb-2">Trust Erosion</h3>
-                    <p class="text-slate-400">Users become skeptical of platforms that prioritize engagement over their well-being, leading to a brand trust deficit.</p>
-                </div>
-                 <div class="card rounded-lg p-6 z-10">
-                    <h3 class="text-xl font-bold text-white mb-2">Customer Churn</h3>
-                    <p class="text-slate-400">Fatigued and distrustful users reduce their usage or leave the platform altogether, hurting long-term revenue.</p>
+                <div class="solution-card">
+                    <span class="icon">🧘‍♀️</span>
+                    <h3>Mindful Mode & Zero UI</h3>
+                    <p>Product features or screen-free interfaces that minimize cognitive load, allowing users to control their digital diet and reduce intrusive interactions.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Section 5: The Path Forward -->
-        <section>
-            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Path Forward: From Exploitation to Empowerment</h2>
-             <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">The future belongs to brands that build trust and prioritize well-being. This requires a strategic shift in both product design and marketing.</p>
-            <div class="w-full max-w-4xl mx-auto card rounded-lg p-2">
-                <div class="flex border-b border-slate-700">
-                    <button data-target="product" class="tab-button active flex-1 py-3 px-4 font-semibold border-b-2 border-transparent transition-colors duration-300">Product & Design Innovation</button>
-                    <button data-target="marketing" class="tab-button flex-1 py-3 px-4 font-semibold border-b-2 border-transparent transition-colors duration-300">Marketing & Analytics Strategy</button>
-                </div>
-                <div class="p-6 md:p-8">
-                    <div id="product-content" class="tab-content space-y-6"></div>
-                    <div id="marketing-content" class="tab-content hidden space-y-6"></div>
-                </div>
-            </div>
+        <!-- Final Manifesto Section -->
+        <section id="manifesto" class="container is-visible">
+            <div class="quote">“The future of marketing is emotionally aware.”</div>
+            <p class="subtext">Let’s design systems that empower, not exhaust. A call for a new era of digital products built on trust, well-being, and sustainable engagement.</p>
+            <a href="#" class="cta-button">Download the Full Research (PDF)</a>
         </section>
+    </main>
 
-    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 The Digital Dilemma Research. All rights reserved.</p>
+            <p>Designed for academic discussion and future innovation in ethical technology.</p>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const data = {
-                consequences: {
-                    labels: [
-                        'Increased Stress & Anxiety',
-                        'Sleep Disruption',
-                        ['Attention Fatigue &', 'Cognitive Decline'],
-                        'Pessimism & Reduced Trust',
-                        ['Compulsive Behavior', '& Addiction']
-                    ],
-                    data: [9, 8, 8, 7, 8.5]
-                },
-                darkPatterns: [
-                    { title: "Infinite Scroll", content: "By removing natural stopping points, platforms encourage endless consumption, leading to prolonged usage and cognitive fatigue. Seen on TikTok, Instagram, YouTube." },
-                    { title: "Push Notifications", content: "Constant alerts create a sense of urgency and Fear of Missing Out (FOMO), compelling users to compulsively check their devices and disrupting offline life." },
-                    { title: "Negative Headline Bias", content: "Algorithms prioritize sensationalist, negative headlines that exploit our inherent bias towards threat, provably increasing click-through rates." },
-                    { title: "Algorithmic Curation", content: "Content is hyper-targeted to reinforce existing beliefs, creating 'reality bubbles' that can increase polarization and limit exposure to diverse ideas." }
-                ],
-                solutions: {
-                    product: [
-                        { icon: '🧠', title: "Emotionally Intelligent AI", content: "Develop human-centered AI like the 'io' initiative—screen-free, ambient, and designed for empowerment, not addiction. Prioritize user control and transparency." },
-                        { icon: '🌿', title: "Designing for Digital Wellness", content: "Create features that encourage mindful consumption, such as natural stopping points, customizable notifications, and digital-free zone reminders." },
-                        { icon: '🛠️', title: "Innovation for Disengagement", content: "Shift the design goal from maximizing time-on-site to fostering healthy, sustainable relationships. True innovation may lie in helping users step away refreshed." }
-                    ],
-                    marketing: [
-                        { icon: '📊', title: "Adopt Well-being Metrics", content: "Move beyond CTR. Use a 'Digital Fatigue Index' or 'Friction Score' to measure the quality of engagement and link user well-being directly to long-term ROI." },
-                        { icon: '🛡️', title: "Champion Ethical Data Practices", content: "Build trust through radical transparency. Use opt-in consent, practice data minimization, and give users full control. Turn ethical data stewardship into a competitive advantage." },
-                        { icon: '🗣️', title: "Cultivate Proactive Wellness", content: "Use analytics to detect early signs of fatigue and offer personalized relief. This transforms marketing from churn prevention to proactive 'digital care'." }
-                    ]
-                }
-            };
-            
-            let consequencesChart, ctrChart;
-
-            const wrapLabel = (label) => {
-                if (typeof label === 'string' && label.length > 16) {
-                    const words = label.split(' ');
-                    const lines = [];
-                    let currentLine = '';
-                    words.forEach(word => {
-                        if ((currentLine + word).length > 16) {
-                            lines.push(currentLine.trim());
-                            currentLine = word + ' ';
-                        } else {
-                            currentLine += word + ' ';
-                        }
-                    });
-                    lines.push(currentLine.trim());
-                    return lines;
-                }
-                return label;
-            };
-
-            const chartTooltipTitleCallback = (tooltipItems) => {
-                const item = tooltipItems[0];
-                let label = item.chart.data.labels[item.dataIndex];
-                return Array.isArray(label) ? label.join(' ') : label;
-            };
-            
-            function init() {
-                populateAccordion();
-                populateTabs();
-                createConsequencesChart();
-                createCtrChart();
-                setupTabs();
-            }
-
-            function populateAccordion() {
-                const container = document.getElementById('dark-patterns-accordion');
-                container.innerHTML = data.darkPatterns.map(item => `
-                    <div class="border-b border-slate-700 last:border-b-0">
-                        <button class="accordion-header w-full text-left py-4 font-semibold text-white flex justify-between items-center">
-                            <span>${item.title}</span>
-                            <span class="transform transition-transform duration-300 text-mint-400 text-2xl font-light">+</span>
-                        </button>
-                        <div class="accordion-content px-1 pb-4">
-                            <p class="text-slate-400">${item.content}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                container.querySelectorAll('.accordion-header').forEach(header => {
-                    header.addEventListener('click', () => {
-                        const content = header.nextElementSibling;
-                        const symbol = header.querySelector('span:last-child');
-                        const isActive = content.style.maxHeight;
-
-                        document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-                        document.querySelectorAll('.accordion-header span:last-child').forEach(s => { s.textContent = '+'; s.style.transform = 'rotate(0deg)'; });
-                        
-                        if (isActive) {
-                            content.style.maxHeight = null;
-                        } else {
-                            content.style.maxHeight = content.scrollHeight + "px";
-                            symbol.textContent = '−';
-                        }
-                    });
+            // Smooth scroll for hero button
+            document.querySelector('.scroll-indicator').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-            }
+            });
 
-            function populateTabs() {
-                const productContainer = document.getElementById('product-content');
-                const marketingContainer = document.getElementById('marketing-content');
+            // Intersection Observer for scroll animations (fade-in/slide-up)
+            const sections = document.querySelectorAll('section:not(#hero)'); // Exclude hero
+            const observerOptions = {
+                root: null,
+                threshold: 0.15 // Section becomes visible when 15% of it is in viewport
+            };
 
-                const renderSolutions = (solutions) => solutions.map(s => `
-                    <div class="flex items-start space-x-4">
-                        <div class="text-2xl">${s.icon}</div>
-                        <div>
-                            <h4 class="font-bold text-white text-lg">${s.title}</h4>
-                            <p class="text-slate-400">${s.content}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                productContainer.innerHTML = renderSolutions(data.solutions.product);
-                marketingContainer.innerHTML = renderSolutions(data.solutions.marketing);
-            }
-
-            function setupTabs() {
-                const tabButtons = document.querySelectorAll('.tab-button');
-                const tabContents = document.querySelectorAll('.tab-content');
-                tabButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const targetId = button.dataset.target;
-                        tabButtons.forEach(btn => btn.classList.remove('active'));
-                        button.classList.add('active');
-                        tabContents.forEach(content => {
-                            content.classList.toggle('hidden', content.id !== `${targetId}-content`);
-                        });
-                    });
-                });
-            }
-
-            function createConsequencesChart() {
-                const ctx = document.getElementById('consequencesChart').getContext('2d');
-                consequencesChart = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: data.consequences.labels,
-                        datasets: [{
-                            label: 'Severity of Impact',
-                            data: data.consequences.data,
-                            fill: true,
-                            backgroundColor: 'rgba(100, 255, 218, 0.2)',
-                            borderColor: '#64FFDA',
-                            pointBackgroundColor: '#64FFDA',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: '#64FFDA'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { callbacks: { title: chartTooltipTitleCallback } }
-                        },
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 10,
-                                grid: { color: 'rgba(45, 59, 88, 0.5)' },
-                                angleLines: { color: 'rgba(45, 59, 88, 0.5)' },
-                                pointLabels: { 
-                                    color: '#CCD6F6',
-                                    font: { size: 12 }
-                                },
-                                ticks: {
-                                    display: false,
-                                    stepSize: 2,
-                                    backdropColor: 'transparent',
-                                    color: '#CCD6F6'
-                                }
-                            }
-                        }
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        // Optional: remove 'is-visible' if you want animations to repeat on scroll up
+                        // entry.target.classList.remove('is-visible');
                     }
                 });
-            }
+            }, observerOptions);
 
-            function createCtrChart() {
-                const ctx = document.getElementById('ctrChart').getContext('2d');
-                const slider = document.getElementById('negative-words-slider');
-                const sliderValue = document.getElementById('slider-value');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
 
-                ctrChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Baseline CTR', wrapLabel('CTR with Negative Words')],
-                        datasets: [{
-                            label: 'CTR Increase',
-                            data: [100, 100 + (1 * 2.3)],
-                            backgroundColor: ['#233554', '#64FFDA'],
-                            borderColor: ['#8892B0', '#64FFDA'],
-                            borderWidth: 1,
-                            borderRadius: 5
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { 
-                                callbacks: { 
-                                    title: chartTooltipTitleCallback,
-                                    label: (context) => {
-                                        let value = context.parsed.x;
-                                        let increase = (value - 100).toFixed(1);
-                                        return value > 100 ? `+${increase}% vs Baseline` : `Baseline: ${value}%`;
-                                    }
-                                } 
-                            }
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: false,
-                                min: 95,
-                                grid: { color: 'rgba(45, 59, 88, 0.5)' },
-                                ticks: {
-                                    color: '#8892B0',
-                                    callback: (value) => value + '%'
-                                }
-                            },
-                            y: {
-                                grid: { display: false },
-                                ticks: { color: '#CCD6F6', font: { size: 14 } }
-                            }
-                        }
+            // Horizontal Timeline Scroll and Active State
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            const updateTimelineActiveItem = () => {
+                const wrapperScrollLeft = timelineWrapper.scrollLeft;
+                const wrapperWidth = timelineWrapper.offsetWidth;
+
+                timelineItems.forEach(item => {
+                    const itemLeft = item.offsetLeft;
+                    const itemWidth = item.offsetWidth;
+
+                    // Calculate if the item is roughly in the center of the viewport
+                    const isCentered = (itemLeft + itemWidth / 2 > wrapperScrollLeft) &&
+                                       (itemLeft + itemWidth / 2 < wrapperScrollLeft + wrapperWidth);
+                    
+                    if (isCentered) {
+                        item.classList.add('active-scroll');
+                    } else {
+                        item.classList.remove('active-scroll');
                     }
                 });
+            };
 
-                slider.addEventListener('input', (e) => {
-                    const words = parseInt(e.target.value);
-                    sliderValue.textContent = words;
-                    ctrChart.data.datasets[0].data[1] = 100 + (words * 2.3);
-                    ctrChart.update();
-                });
-            }
+            timelineWrapper.addEventListener('scroll', updateTimelineActiveItem);
+            // Initial check on load
+            updateTimelineActiveItem();
 
-            init();
+
+            // Gemini API Integration for Headline Reframer
+            const headlineInput = document.getElementById('headline-input');
+            const reframingButton = document.getElementById('reframing-button');
+            const reframedHeadlineOutput = document.getElementById('reframed-headline');
+            const loadingSpinner = document.getElementById('loading-spinner');
+
+            reframingButton.addEventListener('click', async () => {
+                const prompt = headlineInput.value.trim();
+                if (!prompt) {
+                    reframedHeadlineOutput.textContent = "Please enter a headline to reframe.";
+                    return;
+                }
+
+                loadingSpinner.style.display = 'block';
+                reframingButton.disabled = true;
+                reframedHeadlineOutput.textContent = ''; // Clear previous output
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative, focusing on well-being and positive impact where possible. Keep it concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        reframedHeadlineOutput.textContent = text;
+                    } else {
+                        reframedHeadlineOutput.textContent = "Could not reframe the headline. Please try again.";
+                        console.error("Unexpected API response structure:", result);
+                    }
+                } catch (error) {
+                    reframedHeadlineOutput.textContent = "Error reframing headline. Please check your network connection or try again later.";
+                    console.error("Error calling Gemini API:", error);
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                    reframingButton.disabled = false;
+                }
+            });
         });
     </script>
 </body>

@@ -21,7 +21,7 @@
             --font-serif: Georgia, serif; /* For the quote in manifesto */
         }
 
-        /* Dark Mode variables - Re-added from previous full HTML */
+        /* Dark Mode variables */
         body.dark-mode {
             --color-background: #1C1C1E; /* Dark Gray for background */
             --color-text-primary: #F2F2F7; /* Light Gray for primary text */
@@ -37,7 +37,7 @@
             color: var(--color-text-primary);
             line-height: 1.6;
             margin: 0;
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* Ensures smooth scrolling behavior across the site */
             overflow-x: hidden; /* Prevents horizontal scroll from responsive elements */
         }
 
@@ -94,20 +94,19 @@
                 var(--color-background); /* Base background color */
             
             padding: 2rem;
-            position: relative; /* Context for absolutely positioned elements like scroll indicator */
+            position: relative; /* Context for absolutely positioned elements like scroll indicator and illustration */
             overflow: hidden; /* Ensures any animating elements or overflow are clipped */
             animation: fadeIn 1.5s ease-out forwards; /* Initial fade-in animation for the entire section */
         }
 
-        /* Wrapper for hero content (headline, subheadline, tagline, illustration, buttons) */
-        .hero-main-content { /* Renamed from .hero-content to avoid conflicts and improve clarity */
-            /* Flex properties to stack children vertically and center them */
+        /* Wrapper for hero content (headline, subheadline, tagline, buttons) */
+        .hero-main-content {
             display: flex;
             flex-direction: column;
             align-items: center; /* Center items horizontally within flex container */
             text-align: center; /* For text alignment */
 
-            position: relative; /* Context for children if needed, but illustration is now in flow */
+            position: relative; /* Context for children if needed */
             z-index: 10; /* Higher z-index to bring content to the front */
             max-width: 900px; /* Limits the width of the text for readability */
             margin: 0 auto; /* Centers the content wrapper horizontally */
@@ -147,26 +146,29 @@
             font-size: 1rem; /* Smaller, supporting text for credibility */
             color: var(--color-text-secondary);
             opacity: 0.8; /* Slightly subdued for visual hierarchy */
-            margin-bottom: 2.5rem; /* Space before the illustration */
+            margin-bottom: 2.5rem; /* Space before the buttons */
         }
 
-        /* Central Illustration Styling - now in normal flow */
+        /* Central Illustration Styling - Now positioned absolutely behind content */
         .hero-illustration {
-            display: block; /* Ensures the image takes up its own block space */
-            margin: 2rem auto 3rem auto; /* Top margin for spacing from tagline, auto for horizontal centering, bottom margin for spacing to CTAs */
+            position: absolute; /* Positioned relative to #hero */
+            bottom: -5%; /* Slightly off-screen to ensure full visibility on load */
+            left: 50%;
+            transform: translateX(-50%); /* Centered horizontally */
             width: 80%; /* Base width, scales responsively */
             max-width: 700px; /* Maximum size on larger screens */
             height: auto; /* Maintains aspect ratio */
-            opacity: 0.7; /* Subtly faded to blend with the background */
-            pointer-events: none; /* Prevents interaction with the image */
-            /* Animation for the illustration to slide subtly into view */
+            opacity: 0.2; /* Very subtle, faded to blend with background */
+            pointer-events: none; /* Prevents interaction with the image, allows clicks to pass through */
+            z-index: 5; /* Stays behind text content (z-index 10) */
+            /* Animation for the illustration's subtle slide-up entrance */
             animation: slideUpImage 2s ease-out forwards; 
         }
 
         /* Animation for illustration's subtle slide-up entrance */
         @keyframes slideUpImage {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 0.7; }
+            from { transform: translateX(-50%) translateY(50px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 0.2; } /* End opacity adjusted */
         }
 
         /* CTA Buttons Group Styling */
@@ -175,12 +177,12 @@
             justify-content: center; /* Centers buttons horizontally */
             gap: 1.5rem; /* Space between buttons */
             flex-wrap: wrap; /* Allows buttons to wrap to the next line on smaller screens */
-            margin-top: 2rem; /* Space above buttons (from illustration) */
+            margin-top: 2rem; /* Space above buttons (from tagline) */
             margin-bottom: 4rem; /* Space below buttons before scroll indicator */
         }
 
         /* Common Button Styling */
-        .cta-button { /* Consolidated styles from cta-primary, cta-secondary and general .cta-button */
+        .cta-button { 
             display: inline-block;
             background-color: var(--color-accent-blue); /* Primary button color */
             color: white;
@@ -277,7 +279,8 @@
             
             .hero-illustration {
                 width: 95%; /* Increases illustration size on mobile */
-                margin-bottom: 2rem; /* Adjusts margin for mobile */
+                margin-bottom: 0; /* No margin-bottom when absolutely positioned */
+                bottom: 0; /* Stick to bottom of hero section */
             }
             .cta-group {
                 flex-direction: column; /* Stacks buttons vertically on mobile */
@@ -306,7 +309,7 @@
         }
         /* Pulse and Bounce animations are defined for scroll-indicator */
 
-        /* Existing CSS from code.txt below, adjusted for integration */
+        /* Existing CSS for other sections */
 
         /* Floating CTA Navbar */
         #floating-cta-navbar {
@@ -867,7 +870,8 @@
             
             .hero-illustration {
                 width: 95%; /* Increase illustration size on mobile */
-                margin-bottom: 2rem; /* Adjusts margin for mobile */
+                margin-bottom: 0; /* No margin-bottom when absolutely positioned */
+                bottom: 0; /* Stick to bottom of hero section */
             }
             .cta-group {
                 flex-direction: column; /* Stacks buttons vertically on mobile */
@@ -906,6 +910,7 @@
 
     <!-- Hero Section: The Digital Dilemma - This is the main landing area of the website -->
     <section id="hero">
+        <!-- Main content of the hero section, wrapped for proper stacking and layout -->
         <div class="hero-main-content container">
             <!-- Main Headline: Clear and impactful statement of the website's core message -->
             <h1>The Digital Dilemma:<br>Are We Designing for Attention or Addiction?</h1>
@@ -916,27 +921,27 @@
             <!-- Credibility Tag: Establishes authority and trustworthiness of the research -->
             <p class="trust-tagline">Backed by a 40+ study meta-analysis (2015–2024)</p>
             
-            <!-- Central Illustration Placeholder: Visually represents the core concept -->
-            <!-- Replace this 'img' tag with your actual custom SVG or high-resolution PNG illustration.
-                 The ideal illustration should be minimalist, Apple-like, and convey themes of
-                 digital fatigue, a person caught in an infinite scroll loop, or cognitive overload.
-                 Example placeholder image is designed to fit the brand's aesthetic. -->
-            <img 
-                src="https://placehold.co/700x400/FAFAFA/007AFF?text=Stylized+Figure%0AInfinite+Scroll+Loop" 
-                alt="Stylized illustration depicting a person engaged in an infinite scrolling loop, symbolizing digital fatigue and cognitive overload." 
-                class="hero-illustration"
-                onerror="this.src='https://placehold.co/700x400/FAFAFA/007AFF?text=Illustration+Fallback'"
-            >
-
             <!-- CTA Buttons Group: Provides clear calls to action for visitors -->
             <div class="cta-group">
                 <!-- Primary CTA: Encourages exploration of detailed insights -->
-                <a href="#key-findings" class="cta-button">Explore Key Insights</a>
+                <a href="#key-findings" class="cta-button primary-cta-button">Explore Key Insights</a>
                 <!-- Secondary CTA: Offers a direct download of the full manifesto document -->
                 <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf" class="cta-button secondary">Download the Manifesto (PDF)</a>
             </div>
         </div>
         
+        <!-- Central Illustration Placeholder: Visually represents the core concept -->
+        <!-- Replace this 'img' tag with your actual custom SVG or high-resolution PNG illustration.
+             The ideal illustration should be minimalist, Apple-like, and convey themes of
+             digital fatigue, a person caught in an infinite scroll loop, or cognitive overload.
+             The placeholder is designed to be subtle and blend with the brand's aesthetic. -->
+        <img 
+            src="https://placehold.co/700x400/FAFAFA/C0C0C0?text=Subtle+Illustration" 
+            alt="Stylized illustration depicting a person engaged in an infinite scrolling loop, symbolizing digital fatigue and cognitive overload." 
+            class="hero-illustration"
+            onerror="this.src='https://placehold.co/700x400/FAFAFA/C0C0C0?text=Illustration+Fallback'"
+        >
+
         <!-- Scroll Down Hint: Guides users to discover more content below the fold -->
         <a href="#key-findings" class="scroll-indicator">
             <span>Scroll Down</span>
@@ -1128,7 +1133,6 @@
                     <span class="icon">🤖</span>
                     <h3>AI Companions (Emotional UX)</h3>
                     <p>Emotionally intelligent AI designed to augment human well-being, providing empathetic support and guiding users towards healthier digital habits.</p>
-                <!-- This line seems like a stray fragment, removed it for clarity -->
                 </div>
                 <div class="solution-card">
                     <span class="icon">🛑</span>
@@ -1160,13 +1164,28 @@
     <!-- JavaScript for interactivity -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Helper function to get CSS variables (kept for consistency with other JS)
-            const getCssVariable = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-
             // Hero section content fade-in animation trigger
             const heroMainContent = document.querySelector('.hero-main-content');
-            if (heroMainContent) { // Ensure the element exists before trying to add class
+            if (heroMainContent) {
                 heroMainContent.classList.add('is-visible');
+            }
+
+            // Smooth scroll for 'Explore Key Insights' button
+            const exploreInsightsButton = document.querySelector('.primary-cta-button');
+            if (exploreInsightsButton) {
+                exploreInsightsButton.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default anchor link behavior
+                    const targetId = this.getAttribute('href'); // Get the target section ID from href
+                    const targetElement = document.querySelector(targetId); // Find the target element in the DOM
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        console.warn(`Scroll target element not found for 'Explore Key Insights': ${targetId}.`);
+                    }
+                });
             }
 
             // Smooth scroll for scroll indicator
@@ -1181,14 +1200,13 @@
                             behavior: 'smooth'
                         });
                     } else {
-                        console.warn(`Scroll target element not found: ${targetId}. Ensure the linked section exists.`);
+                        console.warn(`Scroll target element not found for scroll indicator: ${targetId}.`);
                     }
                 });
             }
 
             // Intersection Observer for scroll animations (fade-in/slide-up) for other sections
-            // Targets all sections EXCEPT the hero section
-            const sections = document.querySelectorAll('section:not(#hero)');
+            const sections = document.querySelectorAll('section:not(#hero)'); // Targets all sections EXCEPT the hero section
             const observerOptions = {
                 root: null,
                 threshold: 0.15 
@@ -1211,9 +1229,9 @@
 
             // Floating CTA Navbar visibility
             const floatingNavbar = document.getElementById('floating-cta-navbar');
-            const heroSection = document.getElementById('hero'); // Now correctly targets the consolidated hero ID
+            const heroSection = document.getElementById('hero');
 
-            if (floatingNavbar && heroSection) { // Check if elements exist
+            if (floatingNavbar && heroSection) {
                 const heroObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
@@ -1230,10 +1248,9 @@
 
             // Dark/Light Mode Toggle
             const modeToggle = document.getElementById('mode-toggle');
-            if (modeToggle) { // Check if element exists
+            if (modeToggle) {
                 modeToggle.addEventListener('click', () => {
                     document.body.classList.toggle('dark-mode');
-                    // Store preference in localStorage
                     if (document.body.classList.contains('dark-mode')) {
                         localStorage.setItem('theme', 'dark');
                         modeToggle.textContent = '☀️'; // Sun icon for light mode
@@ -1257,7 +1274,7 @@
             const timelineWrapper = document.querySelector('.timeline-wrapper');
             const timelineItems = document.querySelectorAll('.timeline-item');
 
-            if (timelineWrapper && timelineItems.length > 0) { // Check if elements exist
+            if (timelineWrapper && timelineItems.length > 0) {
                 const updateTimelineActiveItem = () => {
                     const wrapperRect = timelineWrapper.getBoundingClientRect();
                     const wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
@@ -1266,7 +1283,6 @@
                         const itemRect = item.getBoundingClientRect();
                         const itemCenter = itemRect.left + itemRect.width / 2;
 
-                        // Activate if item center is within the visible portion of the wrapper
                         const isCentered = Math.abs(itemCenter - wrapperCenter) < (wrapperRect.width / 4); 
                         
                         if (isCentered) {
@@ -1289,7 +1305,7 @@
             const reframedHeadlineOutput = document.getElementById('reframed-headline');
             const loadingSpinner = document.getElementById('loading-spinner');
 
-            if (reframingButton && headlineInput && reframedHeadlineOutput && loadingSpinner) { // Check if all elements exist
+            if (reframingButton && headlineInput && reframedHeadlineOutput && loadingSpinner) {
                 reframingButton.addEventListener('click', async () => {
                     const prompt = headlineInput.value.trim();
                     if (!prompt) {
@@ -1299,14 +1315,12 @@
 
                     loadingSpinner.style.display = 'block';
                     reframingButton.disabled = true;
-                    reframedHeadlineOutput.textContent = ''; // Clear previous output
+                    reframedHeadlineOutput.textContent = '';
 
                     let chatHistory = [];
                     chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
                     const payload = { contents: chatHistory };
-                    // IMPORTANT: For Canvas environment, leave apiKey as an empty string.
-                    // If running outside Canvas, replace this with your actual Gemini API key.
-                    const apiKey = ""; // API key needs to be provided if running outside Canvas
+                    const apiKey = ""; 
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                     try {
@@ -1316,7 +1330,6 @@
                             body: JSON.stringify(payload)
                         });
 
-                        // Check for successful response before parsing JSON
                         if (!response.ok) {
                             const errorData = await response.json();
                             throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
@@ -1351,10 +1364,10 @@
             const negativeExposureValueSpan = document.getElementById('negative-exposure-value');
             const fatigueRiskOutput = document.getElementById('fatigue-risk-output');
 
-            if (sessionLengthInput && negativeExposureInput && sessionLengthValueSpan && negativeExposureValueSpan && fatigueRiskOutput) { // Check if all elements exist
+            if (sessionLengthInput && negativeExposureInput && sessionLengthValueSpan && negativeExposureValueSpan && fatigueRiskOutput) {
                 const calculateFatigueRisk = () => {
-                    const sessionLength = parseFloat(sessionLengthInput.value); // hours
-                    const negativeExposure = parseFloat(negativeExposureInput.value); // 1-5 scale
+                    const sessionLength = parseFloat(sessionLengthInput.value);
+                    const negativeExposure = parseFloat(negativeExposureInput.value);
 
                     sessionLengthValueSpan.textContent = sessionLength;
                     negativeExposureValueSpan.textContent = negativeExposure;
@@ -1371,14 +1384,13 @@
                     }
 
                     fatigueRiskOutput.textContent = `Risk: ${riskLevel}`;
-                    fatigueRiskOutput.className = ''; // Clear previous classes
+                    fatigueRiskOutput.className = '';
                     fatigueRiskOutput.classList.add(riskClass);
                 };
 
                 sessionLengthInput.addEventListener('input', calculateFatigueRisk);
                 negativeExposureInput.addEventListener('input', calculateFatigueRisk);
 
-                // Initial calculation
                 calculateFatigueRisk();
             }
         });

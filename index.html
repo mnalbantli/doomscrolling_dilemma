@@ -513,6 +513,7 @@
             margin-top: 3rem;
             position: relative; /* For scrollbar styling */
         }
+        /* Ensure scrollbar is always visible */
         .timeline-wrapper::-webkit-scrollbar {
             height: 8px;
             background-color: var(--color-border);
@@ -524,9 +525,10 @@
         }
         .timeline-inner {
             display: flex;
-            white-space: nowrap;
-            gap: 4rem;
-            padding: 0 20vw;
+            white-space: nowrap; /* Keep items in a single line */
+            gap: 4rem; /* Spacing between items */
+            padding: 0 20vw; /* Padding to center items at ends */
+            align-items: flex-start; /* Align items to the top if heights vary */
         }
         .timeline-item {
             display: inline-flex;
@@ -534,10 +536,11 @@
             align-items: center;
             text-align: center;
             scroll-snap-align: center;
-            flex-shrink: 0;
-            width: 280px;
+            flex-shrink: 0; /* Prevent items from shrinking */
+            width: 280px; /* Fixed width for each item */
             opacity: 0.4;
             transition: opacity 0.6s ease-out;
+            white-space: normal; /* Allow text to wrap within the item */
         }
         .timeline-item.active-scroll {
             opacity: 1;
@@ -558,10 +561,12 @@
             font-weight: 600;
             color: var(--color-text-primary);
             margin-bottom: 0.75rem;
+            line-height: 1.3; /* Ensure enough space for wrapping text */
         }
         .timeline-item-description {
             font-size: 1rem;
             color: var(--color-text-secondary);
+            line-height: 1.5; /* Ensure enough space for wrapping text */
         }
 
         /* Solutions as Feature Cards */
@@ -1008,7 +1013,10 @@
                     const itemCenter = itemRect.left + itemRect.width / 2;
 
                     // Activate if item center is within the visible portion of the wrapper
-                    if (itemRect.left < wrapperRect.right && itemRect.right > wrapperRect.left) {
+                    // This logic considers the item's center point relative to the wrapper's center
+                    const isCentered = Math.abs(itemCenter - wrapperCenter) < (wrapperRect.width / 4); // Within a quarter of wrapper width from center
+                    
+                    if (isCentered) {
                         item.classList.add('active-scroll');
                     } else {
                         item.classList.remove('active-scroll');
@@ -1041,6 +1049,8 @@
                 let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
                 const payload = { contents: chatHistory };
+                // IMPORTANT: For Canvas environment, leave apiKey as an empty string.
+                // If running outside Canvas, replace this with your actual Gemini API key.
                 const apiKey = ""; 
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 

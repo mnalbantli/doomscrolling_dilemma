@@ -3,318 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Digital Dilemma: An Interactive Report on Doomscrolling</title>
+    <title>Infographic: The Attention Economy's Hidden Cost</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: The application is designed as a narrative journey through four thematic sections: 1) The Human Cost (visualizing the psychological harm), 2) The Engagement Machine (deconstructing manipulative platform design), 3) The Business Impact (linking user fatigue to churn and brand trust), and 4) The Path Forward (presenting actionable product and marketing solutions). This structure transforms a linear report into an exploratory experience, guiding the user from understanding the core problem to seeing its consequences and potential solutions, making the complex information more digestible and impactful. -->
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Application Structure Plan: The infographic follows a 5-part narrative scroll. It starts with a hook ("The Attention Trap") to establish the core conflict. Section 2 ("The Human Cost") uses a radar chart to show the multifaceted psychological damage. Section 3 ("Engineered for Engagement") interactively deconstructs the platform-level causes using an accordion for dark patterns and a dynamic bar chart for headline bias. Section 4 ("The Business Fallout") uses a flow diagram to show the long-term negative business consequences. Finally, Section 5 ("The Path Forward") presents actionable solutions, organized into tabs. This structure tells a complete story, moving from problem to cause to effect to solution, making the complex topic digestible. -->
     <!-- Visualization & Content Choices: 
-        - Psychological Impacts (Table 1): Report Info -> Data on psychological effects. Goal -> Inform/Compare. Viz -> Interactive Radar Chart (Chart.js). Interaction -> Hovering reveals data points and descriptions. Justification -> Provides a holistic, at-a-glance view of the multifaceted harm described in the report.
-        - Headline CTR Impact: Report Info -> Data point about negative words increasing CTR by 2.3%. Goal -> Compare/Engage. Viz -> Interactive Bar Chart (Chart.js). Interaction -> A slider allows users to change the number of negative words and see the CTR change dynamically. Justification -> Turns a static statistic into a memorable, interactive demonstration.
-        - Dark Patterns (Table 2): Report Info -> List of manipulative design tactics. Goal -> Organize/Inform. Viz -> Interactive Accordion (HTML/CSS/JS). Interaction -> Clicking a pattern expands to show its description and mechanism. Justification -> Organizes complex information cleanly and encourages focused exploration over passive reading.
-        - The Path to Churn: Report Info -> Connecting platform design to social media fatigue and churn signals. Goal -> Show Relationship. Viz -> Visual Flow Diagram (HTML/Tailwind). Interaction -> Static visual. Justification -> Clearly illustrates the causal chain from platform tactics to negative business outcomes.
-        - Ethical Principles (Table 4): Report Info -> List of solutions. Goal -> Organize/Inform. Viz -> Tabbed Card Layout (HTML/CSS/JS). Interaction -> Users can toggle between Product and Marketing principles. Justification -> Separates concerns and provides actionable, role-based insights for different audiences.
+        - Behavioral Consequences (Table 1): Goal -> Compare. Viz -> Radar Chart (Chart.js/Canvas). Justification -> Effectively shows the multi-dimensional profile of psychological harm from a central point. All labels are wrapped and tooltips configured. No SVG.
+        - Negative Headline Bias (CTR Data): Goal -> Compare. Viz -> Interactive Bar Chart (Chart.js/Canvas) with a slider. Justification -> Makes the static 2.3% statistic dynamic and memorable, allowing users to see the compounding effect. No SVG.
+        - Platform Design Elements (Table 2): Goal -> Organize. Viz -> Interactive Accordion (HTML/CSS/JS). Justification -> A clean, user-driven way to explore detailed information without cluttering the UI. No SVG/Mermaid.
+        - Fatigue-to-Churn Process: Goal -> Organize/Show Change. Viz -> Flow Chart (HTML/Tailwind CSS). Justification -> Clearly visualizes the causal link from user fatigue to brand trust erosion and churn. No SVG/Mermaid.
+        - Future Pathways (Solutions): Goal -> Organize. Viz -> Tabbed Content (HTML/CSS/JS) with Unicode icons. Justification -> Neatly separates Product and Marketing strategies, providing actionable, role-based insights. No SVG.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F9FAFB; /* A very light gray */
-            color: #1F2937; /* A dark gray for text */
+            background-color: #0A192F; /* Deep Navy Blue */
+            color: #CCD6F6; /* Light Blue-Gray text */
         }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s;
+        .section-title {
+            color: #64FFDA; /* Mint Green accent */
         }
-        .nav-link.active, .nav-link:hover {
-            color: #2563EB; /* A calm blue */
+        .card {
+            background-color: #112240; /* Lighter Navy */
+            border: 1px solid #233554;
         }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2563EB;
-            transition: width 0.3s;
-        }
-        .nav-link.active::after, .nav-link:hover::after {
-            width: 100%;
-        }
-        .content-section {
-            padding-top: 4rem;
-            margin-top: -4rem;
-        }
-        .tab-button.active {
-            background-color: #2563EB;
-            color: white;
-            border-color: #2563EB;
+        .highlight-stat {
+            color: #64FFDA;
+            font-weight: 800;
         }
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s ease-out;
         }
+        .tab-button.active {
+            color: #64FFDA;
+            border-bottom-color: #64FFDA;
+        }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
+            max-width: 550px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px; /* Base height */
+            height: 350px;
             max-height: 400px;
         }
         @media (min-width: 768px) {
             .chart-container {
-                height: 350px;
+                height: 400px;
             }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased leading-relaxed">
 
-    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm border-b border-gray-200">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl md:text-2xl font-bold text-gray-800">The Digital Dilemma</h1>
-            <div class="hidden md:flex items-center space-x-8 text-gray-600 font-medium">
-                <a href="#cost" class="nav-link">The Human Cost</a>
-                <a href="#machine" class="nav-link">The Engagement Machine</a>
-                <a href="#impact" class="nav-link">The Business Impact</a>
-                <a href="#path" class="nav-link">The Path Forward</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-gray-700">
-                <span class="sr-only">Open menu</span>
-                <div id="hamburger-icon">
-                    <div class="w-6 h-0.5 bg-gray-700 mb-1.5"></div>
-                    <div class="w-6 h-0.5 bg-gray-700"></div>
-                    <div class="w-6 h-0.5 bg-gray-700 mt-1.5"></div>
-                </div>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2 border-t border-gray-200">
-             <a href="#cost" class="block py-2 text-gray-600 font-medium nav-link-mobile">The Human Cost</a>
-             <a href="#machine" class="block py-2 text-gray-600 font-medium nav-link-mobile">The Engagement Machine</a>
-             <a href="#impact" class="block py-2 text-gray-600 font-medium nav-link-mobile">The Business Impact</a>
-             <a href="#path" class="block py-2 text-gray-600 font-medium nav-link-mobile">The Path Forward</a>
-        </div>
-    </header>
+    <div class="container mx-auto px-6 py-12 md:py-20">
 
-    <main class="container mx-auto px-6 py-12">
-        
-        <section class="text-center min-h-[60vh] flex flex-col justify-center items-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">Beyond the Scroll</h2>
-            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-8">This interactive report analyzes doomscrolling not as a personal failing, but as a systemic issue at the intersection of psychology, platform design, and business strategy. Navigate through the sections to explore the causes, consequences, and solutions.</p>
-             <a href="#cost" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors">Begin Exploration</a>
+        <!-- Section 1: The Attention Trap -->
+        <section class="text-center mb-20 md:mb-32">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">The Attention Trap</h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-slate-400">Digital platforms are designed to maximize engagement. But what happens when that engagement comes at the cost of our well-being? This is the story of doomscrolling—not as a personal failure, but as a strategic design choice.</p>
         </section>
 
-
-        <section id="cost" class="content-section">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">The Human Cost</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600">This section explores the measurable psychological and physiological toll of doomscrolling. The relentless cycle of negative engagement, fueled by our innate negativity bias and platform design, systematically erodes user well-being.</p>
-            </div>
-            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100">
-                 <h3 class="text-2xl font-bold mb-4 text-center">A Profile of Digital Burnout</h3>
-                 <p class="text-gray-600 mb-6 text-center max-w-2xl mx-auto">Compulsive consumption of negative news leads to a state of "digital burnout." The chart below visualizes the key areas of impact identified in the research. Hover over each point to see the severity and a brief explanation.</p>
-                 <div class="chart-container h-[350px] md:h-[400px]">
-                    <canvas id="impactsChart"></canvas>
+        <!-- Section 2: The Human Cost -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Human Cost of Compulsive Scrolling</h2>
+            <div class="grid md:grid-cols-5 gap-8 items-center">
+                <div class="md:col-span-2 text-center md:text-left">
+                    <h3 class="text-2xl font-bold text-white mb-4">A Profile of Digital Burnout</h3>
+                    <p class="text-slate-400 mb-6">The relentless consumption of negative content has measurable, detrimental effects on mental and physical health. It's not just "feeling down"—it's a pattern of cognitive and emotional erosion.</p>
+                    <div class="card rounded-lg p-6 text-center">
+                        <p class="text-slate-300">After the Boston Marathon bombing, those with 6+ hours of media exposure were</p>
+                        <p class="text-6xl md:text-7xl highlight-stat my-2">9x</p>
+                        <p class="text-slate-300">more likely to report high acute stress.</p>
+                    </div>
+                </div>
+                <div class="md:col-span-3 card rounded-lg p-6">
+                    <div class="chart-container">
+                        <canvas id="consequencesChart"></canvas>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="machine" class="content-section">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">The Engagement Machine</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600">Doomscrolling isn't accidental; it's a predictable outcome of intentional design. This section deconstructs the "dark patterns" and algorithmic choices platforms use to maximize engagement, often at the user's expense.</p>
-            </div>
-
+        <!-- Section 3: Engineered for Engagement -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">Engineered for Engagement</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">Doomscrolling isn't accidental. It's the result of "dark patterns"—deliberate UX choices designed to exploit our cognitive vulnerabilities and keep us hooked.</p>
             <div class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <h3 class="text-2xl font-bold mb-4">Anatomy of a Dark Pattern</h3>
-                    <p class="mb-6 text-gray-600">Platforms use "dark patterns"—or Attention-Capture Damaging Patterns (ACDPs)—to exploit cognitive vulnerabilities and manipulate user behavior. Click each pattern to learn how it works.</p>
+                <!-- Accordion for Dark Patterns -->
+                <div class="card rounded-lg p-6">
+                    <h3 class="text-2xl font-bold text-white mb-4">The Anatomy of Addiction</h3>
+                    <p class="text-slate-400 mb-6">Click on each design element to see how it works.</p>
                     <div id="dark-patterns-accordion" class="space-y-3"></div>
                 </div>
-
-                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100">
-                    <h3 class="text-2xl font-bold mb-4">The Power of Negative Headlines</h3>
-                    <p class="mb-4 text-gray-600">Research shows that negativity is a reliable driver of clicks. According to Robertson et al. (2023), each additional negative word in a headline boosts its click-through rate (CTR) by 2.3%. Use the slider to see this principle in action.</p>
+                <!-- Interactive Chart for Headline Bias -->
+                <div class="card rounded-lg p-6">
+                    <h3 class="text-2xl font-bold text-white mb-4">The Negativity Bonus</h3>
+                    <p class="text-slate-400 mb-4">Research shows negative words in headlines increase click-through rates (CTR) by 2.3% per word. Use the slider to see how negativity is rewarded.</p>
                     <div class="chart-container">
                         <canvas id="ctrChart"></canvas>
                     </div>
-                    <div class="mt-4">
-                        <label for="negative-words-slider" class="font-medium text-gray-700">Number of Negative Words: <span id="slider-value" class="font-bold text-blue-600">1</span></label>
-                        <input id="negative-words-slider" type="range" min="0" max="10" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-2">
+                     <div class="mt-4">
+                        <label for="negative-words-slider" class="font-medium text-slate-300">Number of Negative Words: <span id="slider-value" class="font-bold highlight-stat">1</span></label>
+                        <input id="negative-words-slider" type="range" min="0" max="10" value="1" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer mt-2">
                     </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="impact" class="content-section">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">The Business Impact</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600">The erosion of user well-being is not just a social issue; it's a direct threat to long-term business viability. This section illustrates how digital fatigue leads to diminished brand trust and customer churn.</p>
-            </div>
-            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100">
-                 <h3 class="text-2xl font-bold mb-4 text-center">The Unseen Path to Churn</h3>
-                 <p class="text-gray-600 mb-8 text-center max-w-2xl mx-auto">High short-term engagement metrics can dangerously mask the underlying trend of user burnout. This diagram shows the causal chain linking manipulative platform design to the loss of valuable customers.</p>
-                 <div class="grid md:grid-cols-3 gap-4 text-center">
-                    <div class="p-4">
-                        <div class="w-16 h-16 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-3xl mb-3">⚙️</div>
-                        <h4 class="font-bold text-lg text-red-800">Cause: Manipulative Design</h4>
-                        <p class="text-red-700 text-sm">Infinite Scroll, Sensory Overload, Push Notifications</p>
-                    </div>
-                    <div class="flex items-center justify-center text-4xl font-light text-gray-400">→</div>
-                    <div class="p-4">
-                        <div class="w-16 h-16 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center mx-auto text-3xl mb-3">😩</div>
-                        <h4 class="font-bold text-lg text-yellow-800">Effect: Social Media Fatigue</h4>
-                        <p class="text-yellow-700 text-sm">Cognitive overload, annoyance, stress, loss of interest</p>
-                    </div>
-                    <div class="hidden md:flex items-center justify-center text-4xl font-light text-gray-400">→</div>
-                     <div class="md:hidden flex items-center justify-center text-4xl font-light text-gray-400 col-span-3">↓</div>
-                     <div class="p-4 md:col-start-auto col-start-2">
-                        <div class="w-16 h-16 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mx-auto text-3xl mb-3">📉</div>
-                        <h4 class="font-bold text-lg text-gray-800">Outcome: Churn</h4>
-                        <p class="text-gray-700 text-sm">Reduced usage, negative feedback, lower LTV, brand distrust</p>
-                    </div>
-                 </div>
-            </div>
-        </section>
-
-        <section id="path" class="content-section">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">The Path Forward</h2>
-                <p class="max-w-3xl mx-auto text-lg text-gray-600">Shifting from an exploitative attention economy to a sustainable value-creation model is a strategic imperative. Explore key principles for building a healthier, more trustworthy digital ecosystem.</p>
-            </div>
-            
-            <div class="w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-2">
-                <div class="flex justify-center border-b border-gray-200">
-                    <button id="product-tab" class="tab-button flex-1 py-3 px-4 font-semibold rounded-t-lg transition-colors duration-300 border-b-2 border-transparent">Product Strategy</button>
-                    <button id="marketing-tab" class="tab-button flex-1 py-3 px-4 font-semibold rounded-t-lg transition-colors duration-300 border-b-2 border-transparent">Marketing Strategy</button>
-                </div>
-                <div id="principles-content" class="p-6 md:p-8">
                 </div>
             </div>
         </section>
 
-    </main>
-    
-    <footer class="text-center py-8 mt-12 border-t border-gray-200">
-        <p class="text-gray-500">An interactive synthesis of the report "The Digital Dilemma."</p>
-    </footer>
+        <!-- Section 4: The Business Fallout -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Business Fallout: A Vicious Cycle</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">Prioritizing short-term clicks over long-term loyalty creates a cascade of negative outcomes that ultimately harm the brand and the business.</p>
+            <div class="grid md:grid-cols-3 gap-8 text-center relative">
+                 <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-700 hidden md:block"></div>
+                 <div class="absolute top-0 left-1/2 w-0.5 h-full bg-slate-700 md:hidden"></div>
+                <div class="card rounded-lg p-6 z-10">
+                    <h3 class="text-xl font-bold text-white mb-2">User Fatigue</h3>
+                    <p class="text-slate-400">Constant negative engagement leads to cognitive overload, stress, and widespread social media fatigue.</p>
+                </div>
+                 <div class="card rounded-lg p-6 z-10">
+                    <h3 class="text-xl font-bold text-white mb-2">Trust Erosion</h3>
+                    <p class="text-slate-400">Users become skeptical of platforms that prioritize engagement over their well-being, leading to a brand trust deficit.</p>
+                </div>
+                 <div class="card rounded-lg p-6 z-10">
+                    <h3 class="text-xl font-bold text-white mb-2">Customer Churn</h3>
+                    <p class="text-slate-400">Fatigued and distrustful users reduce their usage or leave the platform altogether, hurting long-term revenue.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: The Path Forward -->
+        <section>
+            <h2 class="section-title text-3xl md:text-4xl font-bold text-center mb-12">The Path Forward: From Exploitation to Empowerment</h2>
+             <p class="max-w-3xl mx-auto text-lg text-slate-400 text-center mb-12">The future belongs to brands that build trust and prioritize well-being. This requires a strategic shift in both product design and marketing.</p>
+            <div class="w-full max-w-4xl mx-auto card rounded-lg p-2">
+                <div class="flex border-b border-slate-700">
+                    <button data-target="product" class="tab-button active flex-1 py-3 px-4 font-semibold border-b-2 border-transparent transition-colors duration-300">Product & Design Innovation</button>
+                    <button data-target="marketing" class="tab-button flex-1 py-3 px-4 font-semibold border-b-2 border-transparent transition-colors duration-300">Marketing & Analytics Strategy</button>
+                </div>
+                <div class="p-6 md:p-8">
+                    <div id="product-content" class="tab-content space-y-6"></div>
+                    <div id="marketing-content" class="tab-content hidden space-y-6"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const data = {
-                impacts: {
-                    labels: ['Anxiety & Depression', 'Sleep Disruption', 'Cognitive Overload', 'Reduced Trust', 'Lower Well-being'],
-                    values: [9, 8, 8, 7, 7.5], 
-                    descriptions: [
-                        "Overload of negative info spikes stress hormones. Users are 9x more likely to report acute stress after 6+ hours of media on a traumatic event.",
-                        "Brain remains stimulated, interfering with rest. Screen use at bedtime is linked to more sleep disturbances and nightmares.",
-                        "Constant stream of information, visuals, and micro-decisions overwhelms the brain, leading to mental exhaustion and decision fatigue.",
-                        "Prolonged immersion in negative news leads to higher pessimism and less trust in others, contributing to 'mean world syndrome'.",
-                        "Individuals consuming more negative news consistently report decreased overall life satisfaction and well-being."
-                    ]
+                consequences: {
+                    labels: [
+                        'Increased Stress & Anxiety',
+                        'Sleep Disruption',
+                        ['Attention Fatigue &', 'Cognitive Decline'],
+                        'Pessimism & Reduced Trust',
+                        ['Compulsive Behavior', '& Addiction']
+                    ],
+                    data: [9, 8, 8, 7, 8.5]
                 },
                 darkPatterns: [
-                    { title: "Infinite Scrolling", content: "Endless feeds eliminate natural stopping points, fostering compulsive engagement and contributing to cognitive fatigue by removing the brain's cues for rest." },
-                    { title: "Push Notifications", content: "Alerts engineered to create a sense of urgency (FOMO), disrupting offline life and habituating constant, compulsive checking." },
-                    { title: "Algorithmic Prioritization", content: "Feeds curated to favor high-engagement (often negative or controversial) content, creating 'echo chambers' that reinforce biases and limit diverse perspectives." },
-                    { title: "Sensory Overload", content: "Bombarding users with bright visuals, fast transitions, and auto-playing videos, which overstimulates the brain and leads to mental exhaustion." },
-                    { title: "Decision Fatigue", content: "Forcing constant micro-decisions (what to watch, like, scroll). The cumulative cognitive load wears down mental energy and the ability to disengage." }
+                    { title: "Infinite Scroll", content: "By removing natural stopping points, platforms encourage endless consumption, leading to prolonged usage and cognitive fatigue. Seen on TikTok, Instagram, YouTube." },
+                    { title: "Push Notifications", content: "Constant alerts create a sense of urgency and Fear of Missing Out (FOMO), compelling users to compulsively check their devices and disrupting offline life." },
+                    { title: "Negative Headline Bias", content: "Algorithms prioritize sensationalist, negative headlines that exploit our inherent bias towards threat, provably increasing click-through rates." },
+                    { title: "Algorithmic Curation", content: "Content is hyper-targeted to reinforce existing beliefs, creating 'reality bubbles' that can increase polarization and limit exposure to diverse ideas." }
                 ],
-                principles: {
+                solutions: {
                     product: [
-                        { title: "Fatigue-Aware Product Design", content: "Design systems that actively mitigate cognitive overload. Use digital biomarkers and AI for proactive fatigue detection, introduce natural stopping points, and offer users more control." },
-                        { title: "Empathetic AI Development", content: "Create AI interactions that prioritize user well-being. This includes calibrated emotional feedback, clear limits on simulated intimacy, and discouraging unhealthy dependency." },
-                        { title: "Zero UI & Ambient Computing", content: "Invest in screen-free, context-aware interfaces that reduce cognitive load. The future is less about optimizing screens and more about providing seamless, unobtrusive assistance." },
+                        { icon: '🧠', title: "Emotionally Intelligent AI", content: "Develop human-centered AI like the 'io' initiative—screen-free, ambient, and designed for empowerment, not addiction. Prioritize user control and transparency." },
+                        { icon: '🌿', title: "Designing for Digital Wellness", content: "Create features that encourage mindful consumption, such as natural stopping points, customizable notifications, and digital-free zone reminders." },
+                        { icon: '🛠️', title: "Innovation for Disengagement", content: "Shift the design goal from maximizing time-on-site to fostering healthy, sustainable relationships. True innovation may lie in helping users step away refreshed." }
                     ],
                     marketing: [
-                        { title: "Radical Transparency in Data Use", content: "Clearly communicate how user data is collected and used. Implement opt-in consent, easy-to-understand privacy policies, and practice data minimization to build authentic trust." },
-                        { title: "Authenticity in Brand Communication", content: "Align actions with stated values. Respond to challenges with honesty and accountability. In a skeptical world, authenticity is the key differentiator for building loyalty." },
-                        { title: "Redefine Engagement Metrics", content: "Shift focus from superficial metrics (clicks, time spent) to holistic indicators of health and long-term value, like Customer Lifetime Value (LTV) and Net Promoter Score (NPS)." }
+                        { icon: '📊', title: "Adopt Well-being Metrics", content: "Move beyond CTR. Use a 'Digital Fatigue Index' or 'Friction Score' to measure the quality of engagement and link user well-being directly to long-term ROI." },
+                        { icon: '🛡️', title: "Champion Ethical Data Practices", content: "Build trust through radical transparency. Use opt-in consent, practice data minimization, and give users full control. Turn ethical data stewardship into a competitive advantage." },
+                        { icon: '🗣️', title: "Cultivate Proactive Wellness", content: "Use analytics to detect early signs of fatigue and offer personalized relief. This transforms marketing from churn prevention to proactive 'digital care'." }
                     ]
                 }
             };
             
-            let ctrChart, impactsChart;
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('.content-section');
+            let consequencesChart, ctrChart;
 
+            const wrapLabel = (label) => {
+                if (typeof label === 'string' && label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = '';
+                    words.forEach(word => {
+                        if ((currentLine + word).length > 16) {
+                            lines.push(currentLine.trim());
+                            currentLine = word + ' ';
+                        } else {
+                            currentLine += word + ' ';
+                        }
+                    });
+                    lines.push(currentLine.trim());
+                    return lines;
+                }
+                return label;
+            };
+
+            const chartTooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                return Array.isArray(label) ? label.join(' ') : label;
+            };
+            
             function init() {
-                setupMobileMenu();
-                setupNavigation();
                 populateAccordion();
+                populateTabs();
+                createConsequencesChart();
                 createCtrChart();
-                createImpactsChart();
                 setupTabs();
             }
 
-            function setupMobileMenu() {
-                const button = document.getElementById('mobile-menu-button');
-                const menu = document.getElementById('mobile-menu');
-                button.addEventListener('click', () => {
-                    menu.classList.toggle('hidden');
-                });
-                document.querySelectorAll('.nav-link-mobile').forEach(link => {
-                    link.addEventListener('click', () => { menu.classList.add('hidden'); });
-                });
-            }
-
-            function setupNavigation() {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            navLinks.forEach(link => {
-                                link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
-                            });
-                        }
-                    });
-                }, { rootMargin: "-50% 0px -50% 0px" });
-
-                sections.forEach(section => {
-                    observer.observe(section);
-                });
-            }
-
             function populateAccordion() {
-                const accordion = document.getElementById('dark-patterns-accordion');
-                accordion.innerHTML = data.darkPatterns.map((item, index) => `
-                    <div class="border border-gray-200 rounded-lg">
-                        <button class="accordion-header w-full text-left p-4 font-semibold flex justify-between items-center text-gray-800" data-index="${index}">
-                            ${item.title}
-                            <span class="transform transition-transform duration-300 text-blue-500">＋</span>
+                const container = document.getElementById('dark-patterns-accordion');
+                container.innerHTML = data.darkPatterns.map(item => `
+                    <div class="border-b border-slate-700 last:border-b-0">
+                        <button class="accordion-header w-full text-left py-4 font-semibold text-white flex justify-between items-center">
+                            <span>${item.title}</span>
+                            <span class="transform transition-transform duration-300 text-mint-400 text-2xl font-light">+</span>
                         </button>
-                        <div class="accordion-content px-4">
-                            <p class="pt-0 pb-4 text-gray-600">${item.content}</p>
+                        <div class="accordion-content px-1 pb-4">
+                            <p class="text-slate-400">${item.content}</p>
                         </div>
                     </div>
                 `).join('');
 
-                accordion.querySelectorAll('.accordion-header').forEach(header => {
+                container.querySelectorAll('.accordion-header').forEach(header => {
                     header.addEventListener('click', () => {
                         const content = header.nextElementSibling;
-                        const symbol = header.querySelector('span');
+                        const symbol = header.querySelector('span:last-child');
                         const isActive = content.style.maxHeight;
 
                         document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-                        document.querySelectorAll('.accordion-header span').forEach(s => s.textContent = '＋');
+                        document.querySelectorAll('.accordion-header span:last-child').forEach(s => { s.textContent = '+'; s.style.transform = 'rotate(0deg)'; });
                         
-                        if (!isActive) {
+                        if (isActive) {
+                            content.style.maxHeight = null;
+                        } else {
                             content.style.maxHeight = content.scrollHeight + "px";
-                            symbol.textContent = '－';
+                            symbol.textContent = '−';
                         }
                     });
+                });
+            }
+
+            function populateTabs() {
+                const productContainer = document.getElementById('product-content');
+                const marketingContainer = document.getElementById('marketing-content');
+
+                const renderSolutions = (solutions) => solutions.map(s => `
+                    <div class="flex items-start space-x-4">
+                        <div class="text-2xl">${s.icon}</div>
+                        <div>
+                            <h4 class="font-bold text-white text-lg">${s.title}</h4>
+                            <p class="text-slate-400">${s.content}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                productContainer.innerHTML = renderSolutions(data.solutions.product);
+                marketingContainer.innerHTML = renderSolutions(data.solutions.marketing);
+            }
+
+            function setupTabs() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.dataset.target;
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        tabContents.forEach(content => {
+                            content.classList.toggle('hidden', content.id !== `${targetId}-content`);
+                        });
+                    });
+                });
+            }
+
+            function createConsequencesChart() {
+                const ctx = document.getElementById('consequencesChart').getContext('2d');
+                consequencesChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: data.consequences.labels,
+                        datasets: [{
+                            label: 'Severity of Impact',
+                            data: data.consequences.data,
+                            fill: true,
+                            backgroundColor: 'rgba(100, 255, 218, 0.2)',
+                            borderColor: '#64FFDA',
+                            pointBackgroundColor: '#64FFDA',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#64FFDA'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { callbacks: { title: chartTooltipTitleCallback } }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 10,
+                                grid: { color: 'rgba(45, 59, 88, 0.5)' },
+                                angleLines: { color: 'rgba(45, 59, 88, 0.5)' },
+                                pointLabels: { 
+                                    color: '#CCD6F6',
+                                    font: { size: 12 }
+                                },
+                                ticks: {
+                                    display: false,
+                                    stepSize: 2,
+                                    backdropColor: 'transparent',
+                                    color: '#CCD6F6'
+                                }
+                            }
+                        }
+                    }
                 });
             }
 
@@ -326,40 +349,46 @@
                 ctrChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Baseline CTR', 'Boosted CTR'],
+                        labels: ['Baseline CTR', wrapLabel('CTR with Negative Words')],
                         datasets: [{
                             label: 'CTR Increase',
                             data: [100, 100 + (1 * 2.3)],
-                            backgroundColor: ['#93C5FD', '#2563EB'],
-                            borderColor: ['#60A5FA', '#1D4ED8'],
+                            backgroundColor: ['#233554', '#64FFDA'],
+                            borderColor: ['#8892B0', '#64FFDA'],
                             borderWidth: 1,
                             borderRadius: 5
                         }]
                     },
                     options: {
+                        indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let value = context.parsed.y - 100;
-                                        return value > 0 ? `+${value.toFixed(1)}% vs Baseline` : 'Baseline';
+                            tooltip: { 
+                                callbacks: { 
+                                    title: chartTooltipTitleCallback,
+                                    label: (context) => {
+                                        let value = context.parsed.x;
+                                        let increase = (value - 100).toFixed(1);
+                                        return value > 100 ? `+${increase}% vs Baseline` : `Baseline: ${value}%`;
                                     }
-                                }
+                                } 
                             }
                         },
                         scales: {
-                            y: { 
+                            x: {
                                 beginAtZero: false,
                                 min: 95,
+                                grid: { color: 'rgba(45, 59, 88, 0.5)' },
                                 ticks: {
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                } 
+                                    color: '#8892B0',
+                                    callback: (value) => value + '%'
+                                }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: '#CCD6F6', font: { size: 14 } }
                             }
                         }
                     }
@@ -368,100 +397,9 @@
                 slider.addEventListener('input', (e) => {
                     const words = parseInt(e.target.value);
                     sliderValue.textContent = words;
-                    const newCtr = 100 + (words * 2.3);
-                    ctrChart.data.datasets[0].data = [100, newCtr];
+                    ctrChart.data.datasets[0].data[1] = 100 + (words * 2.3);
                     ctrChart.update();
                 });
-            }
-
-            function createImpactsChart() {
-                const ctx = document.getElementById('impactsChart').getContext('2d');
-                impactsChart = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: data.impacts.labels,
-                        datasets: [{
-                            label: 'Severity of Impact (out of 10)',
-                            data: data.impacts.values,
-                            fill: true,
-                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                            borderColor: 'rgb(37, 99, 235)',
-                            pointBackgroundColor: 'rgb(37, 99, 235)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(37, 99, 235)'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.dataset.label}: ${context.raw}`;
-                                    },
-                                    afterBody: function(context) {
-                                        const desc = data.impacts.descriptions[context[0].dataIndex];
-                                        return desc ? desc.match(/.{1,45}/g).join('\n') : '';
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 10,
-                                ticks: { display: false },
-                                pointLabels: {
-                                    font: { size: 12 },
-                                    color: '#4B5563'
-                                },
-                                grid: { color: '#E5E7EB' },
-                                angleLines: { color: '#E5E7EB' }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function setupTabs() {
-                const productTab = document.getElementById('product-tab');
-                const marketingTab = document.getElementById('marketing-tab');
-                const contentArea = document.getElementById('principles-content');
-                
-                function renderPrinciples(type) {
-                    contentArea.innerHTML = data.principles[type].map(p => `
-                        <div class="mb-6 last:mb-0 transform transition-opacity duration-300 opacity-0 animate-fade-in">
-                            <h4 class="font-bold text-lg text-gray-800">${p.title}</h4>
-                            <p class="text-gray-600 mt-1">${p.content}</p>
-                        </div>
-                    `).join('');
-                }
-
-                function setActiveTab(tab) {
-                    [productTab, marketingTab].forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                }
-                
-                contentArea.style.setProperty('--animate-duration', '0.5s');
-                const keyframes = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } } .animate-fade-in { animation: fadeIn var(--animate-duration) forwards; }`;
-                const styleSheet = document.createElement("style");
-                styleSheet.innerText = keyframes;
-                document.head.appendChild(styleSheet);
-
-                productTab.addEventListener('click', () => {
-                    setActiveTab(productTab);
-                    renderPrinciples('product');
-                });
-
-                marketingTab.addEventListener('click', () => {
-                    setActiveTab(marketingTab);
-                    renderPrinciples('marketing');
-                });
-                
-                productTab.click();
             }
 
             init();

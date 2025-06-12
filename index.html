@@ -105,17 +105,22 @@
                         var(--color-background); /* Subtle light blobs */
             padding: 2rem;
             animation: fadeIn 2s ease-out forwards;
+            overflow: hidden; /* Hide overflowing visuals */
         }
         #hero h1 {
             font-size: 5rem;
             color: var(--color-text-primary);
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
         #hero p {
             font-size: 1.75rem;
             max-width: 900px;
             margin-bottom: 4rem;
             color: var(--color-text-secondary);
+            position: relative;
+            z-index: 2;
         }
         .scroll-indicator {
             position: absolute;
@@ -126,6 +131,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            z-index: 2;
         }
         .scroll-indicator span {
             font-size: 1rem;
@@ -141,6 +147,65 @@
         @media (max-width: 768px) {
             #hero h1 { font-size: 3.5rem; }
             #hero p { font-size: 1.25rem; }
+        }
+
+        /* Hero Visuals */
+        .hero-visual {
+            position: absolute;
+            opacity: 0.8;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+        .hero-visual-1 { /* Abstract brain/connection */
+            width: 150px;
+            height: 150px;
+            top: 15%;
+            left: 10%;
+            transform: rotate(-15deg);
+            animation: float1 8s ease-in-out infinite;
+        }
+        .hero-visual-2 { /* Data nodes/bubbles */
+            width: 120px;
+            height: 120px;
+            bottom: 20%;
+            right: 15%;
+            transform: rotate(20deg);
+            animation: float2 10s ease-in-out infinite;
+        }
+        .hero-visual-3 { /* Abstract human figure */
+            width: 100px;
+            height: 100px;
+            top: 25%;
+            right: 5%;
+            animation: float3 9s ease-in-out infinite;
+        }
+        .hero-visual-4 { /* Scroll arrow/flow */
+            width: 80px;
+            height: 80px;
+            bottom: 5%;
+            left: 5%;
+            transform: rotate(45deg);
+            animation: float4 7s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0% { transform: translate(0, 0) rotate(-15deg); }
+            50% { transform: translate(20px, 15px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(-15deg); }
+        }
+        @keyframes float2 {
+            0% { transform: translate(0, 0) rotate(20deg); }
+            50% { transform: translate(-25px, -10px) rotate(25deg); }
+            100% { transform: translate(0, 0) rotate(20deg); }
+        }
+        @keyframes float3 {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(15px, -20px); }
+            100% { transform: translate(0, 0); }
+        }
+        @keyframes float4 {
+            0% { transform: translate(0, 0) rotate(45deg); }
+            50% { transform: translate(-10px, 20px) rotate(50deg); }
+            100% { transform: translate(0, 0) rotate(45deg); }
         }
 
         /* Floating CTA Navbar */
@@ -704,6 +769,12 @@
 
     <!-- Hero Section -->
     <section id="hero">
+        <!-- Fun Visuals for Hero Section -->
+        <img src="https://placehold.co/150x150/007AFF/FFFFFF?text=Brain" alt="Abstract Brain/Connection" class="hero-visual hero-visual-1">
+        <img src="https://placehold.co/120x120/6e6e73/FFFFFF?text=Data" alt="Abstract Data Nodes" class="hero-visual hero-visual-2">
+        <img src="https://placehold.co/100x100/111111/FFFFFF?text=Human" alt="Abstract Human Figure" class="hero-visual hero-visual-3">
+        <img src="https://placehold.co/80x80/007AFF/FFFFFF?text=Flow" alt="Abstract Flow Arrow" class="hero-visual hero-visual-4">
+
         <div class="container">
             <h1>The Cost of Infinite Scroll</h1>
             <p>How Platforms Trade Well-being for Engagement: Re-aligning Product Design with User Well-being in the Attention Economy.</p>
@@ -898,6 +969,7 @@
                     <span class="icon">🤖</span>
                     <h3>AI Companions (Emotional UX)</h3>
                     <p>Emotionally intelligent AI designed to augment human well-being, providing empathetic support and guiding users towards healthier digital habits.</p>
+                *The future of marketing is emotionally aware.*</p>
                 </div>
                 <div class="solution-card">
                     <span class="icon">🛑</span>

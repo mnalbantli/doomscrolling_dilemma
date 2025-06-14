@@ -3,1385 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Digital Dilemma: Designed for Attention or Addiction?</title>
+    <title>Infographic: The Post-Screen Marketing Revolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=SF+Pro+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for consistent theming */
-        :root {
-            --color-background: #FAFAFA; /* Very light base background */
-            --color-text-primary: #111111; /* Dark charcoal */
-            --color-accent-blue: #007AFF; /* Apple Blue */
-            --color-text-secondary: #6e6e73; /* Medium gray for secondary text */
-            --color-card-bg: #FFFFFF; /* White for card/element backgrounds */
-            --color-border: #E0E0E0; /* Light gray for borders/separators */
-            --font-primary: 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
-            --font-serif: Georgia, serif; /* For the quote in manifesto */
-        }
-
-        /* Dark Mode variables */
-        body.dark-mode {
-            --color-background: #1C1C1E; /* Dark Gray for background */
-            --color-text-primary: #F2F2F7; /* Light Gray for primary text */
-            --color-text-secondary: #AEAEB2; /* Medium Gray for secondary text */
-            --color-card-bg: #2C2C2E; /* Slightly lighter dark gray for cards */
-            --color-border: #48484A; /* Darker gray for borders */
-        }
-
-        /* Basic Body Styling */
         body {
-            font-family: var(--font-primary);
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            line-height: 1.6;
-            margin: 0;
-            scroll-behavior: smooth; /* Ensures smooth scrolling behavior across the site */
-            overflow-x: hidden; /* Prevents horizontal scroll from responsive elements */
+            font-family: 'Inter', sans-serif;
+            background-color: #001219; /* Deep Navy from Palette */
         }
-
-        /* Global Container for consistent content width and centering */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* General Section Styling for subsequent sections */
-        section {
-            padding: 8rem 0; /* More padding for spacious feel */
-            opacity: 0;
-            transform: translateY(40px); /* Larger initial translateY */
-            transition: opacity 1s ease-out, transform 1s ease-out; /* Slower transition */
+        .chart-container {
             position: relative;
-        }
-        section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* General Heading Styling */
-        h1, h2, h3 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--color-text-primary);
-            letter-spacing: -0.02em; /* Tighter for Apple feel */
-        }
-        /* Specific global heading sizes - can be overridden by hero */
-        h1 { font-size: 4.5rem; text-align: center; line-height: 1.05; }
-        h2 { font-size: 3rem; text-align: center; margin-bottom: 2rem; }
-        h3 { font-size: 2rem; margin-bottom: 1.25rem; }
-        p {
-            margin-bottom: 1rem;
-            color: var(--color-text-secondary);
-            font-size: 1.125rem;
-        }
-
-        /* Hero Section Styling - The main landing area */
-        #hero {
-            height: 100vh; /* Full viewport height for an immersive landing experience */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Vertically center content within the hero */
-            align-items: center; /* Horizontally center content within the hero */
-            text-align: center;
-            
-            /* Soft glass/light gradient background for a subtle, modern feel */
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.7) 0%, transparent 60%),
-                var(--color-background); /* Base background color */
-            
-            padding: 2rem;
-            position: relative; /* Context for absolutely positioned elements like scroll indicator and illustration */
-            overflow: hidden; /* Ensures any animating elements or overflow are clipped */
-            animation: fadeIn 1.5s ease-out forwards; /* Initial fade-in animation for the entire section */
-        }
-
-        /* Wrapper for hero content (headline, subheadline, tagline, buttons) */
-        .hero-main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Center items horizontally within flex container */
-            text-align: center; /* For text alignment */
-
-            position: relative; /* Context for children if needed */
-            z-index: 10; /* Higher z-index to bring content to the front */
-            max-width: 900px; /* Limits the width of the text for readability */
-            margin: 0 auto; /* Centers the content wrapper horizontally */
-            padding: 2rem 0; /* Vertical padding within the content wrapper */
-            opacity: 0; /* Initial state for JavaScript fade-in */
-            transform: translateY(20px); /* Initial state for JavaScript slide-up */
-            /* Delayed transition for a layered entrance effect */
-            transition: opacity 0.8s ease-out 0.5s, transform 0.8s ease-out 0.5s; 
-        }
-
-        /* Class added by JavaScript when content should be visible */
-        .hero-main-content.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Main Headline Styling within Hero */
-        #hero h1 { /* Targeted to hero's h1 to override global h1 */
-            font-size: 5rem; /* Large, bold, and impactful headline */
-            color: var(--color-text-primary);
-            margin-bottom: 1rem;
-            line-height: 1.05; /* Tighter line height for large headings */
-            letter-spacing: -0.04em; /* Subtle negative letter spacing for a modern, compact look */
-        }
-
-        /* Subheadline Styling within Hero */
-        .hero-main-content .subheadline {
-            font-size: 1.75rem; /* Clear and prominent subheadline */
-            max-width: 800px; /* Constrains subheadline width */
-            margin: 0 auto 1.5rem auto; /* Vertical spacing below subheadline */
-            color: var(--color-text-secondary); /* Muted color for hierarchy */
-            font-weight: 400; /* Lighter weight for visual contrast with headline */
-        }
-
-        /* Credibility Tagline Styling within Hero */
-        .hero-main-content .trust-tagline {
-            font-size: 1rem; /* Smaller, supporting text for credibility */
-            color: var(--color-text-secondary);
-            opacity: 0.8; /* Slightly subdued for visual hierarchy */
-            margin-bottom: 2.5rem; /* Space before the buttons */
-        }
-
-        /* Central Illustration Styling - Now positioned absolutely behind content */
-        .hero-illustration {
-            position: absolute; /* Positioned relative to #hero */
-            bottom: -5%; /* Slightly off-screen to ensure full visibility on load */
-            left: 50%;
-            transform: translateX(-50%); /* Centered horizontally */
-            width: 80%; /* Base width, scales responsively */
-            max-width: 700px; /* Maximum size on larger screens */
-            height: auto; /* Maintains aspect ratio */
-            opacity: 0.2; /* Very subtle, faded to blend with background */
-            pointer-events: none; /* Prevents interaction with the image, allows clicks to pass through */
-            z-index: 5; /* Stays behind text content (z-index 10) */
-            /* Animation for the illustration's subtle slide-up entrance */
-            animation: slideUpImage 2s ease-out forwards; 
-        }
-
-        /* Animation for illustration's subtle slide-up entrance */
-        @keyframes slideUpImage {
-            from { transform: translateX(-50%) translateY(50px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 0.2; } /* End opacity adjusted */
-        }
-
-        /* CTA Buttons Group Styling */
-        .cta-group {
-            display: flex;
-            justify-content: center; /* Centers buttons horizontally */
-            gap: 1.5rem; /* Space between buttons */
-            flex-wrap: wrap; /* Allows buttons to wrap to the next line on smaller screens */
-            margin-top: 2rem; /* Space above buttons (from tagline) */
-            margin-bottom: 4rem; /* Space below buttons before scroll indicator */
-        }
-
-        /* Common Button Styling */
-        .cta-button { 
-            display: inline-block;
-            background-color: var(--color-accent-blue); /* Primary button color */
-            color: white;
-            padding: 1.2rem 2.8rem; /* Generous padding for a prominent click target */
-            border-radius: 9999px; /* Creates a pill shape */
-            text-decoration: none; /* Removes underline from links */
-            font-weight: 600; /* Bold text for emphasis */
-            font-size: 1.15rem; /* Readable font size */
-            /* Smooth transitions for hover effects */
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 6px 18px rgba(0, 122, 255, 0.2); /* Soft shadow for depth */
-            letter-spacing: -0.01em; /* Subtle negative letter spacing */
-            white-space: nowrap; /* Prevents button text from wrapping */
-        }
-
-        /* Button Hover Effects */
-        .cta-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: translateY(-3px); /* Subtle lift effect */
-            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.3); /* Enhanced shadow on hover */
-        }
-
-        /* Secondary Button Styling (e.g., outline button) */
-        .cta-button.secondary {
-            background-color: transparent;
-            border: 1px solid var(--color-border); /* Light border */
-            color: var(--color-text-primary); /* Text color from primary */
-            box-shadow: none; /* No initial shadow for secondary */
-        }
-
-        /* Secondary Button Hover Effects */
-        .cta-button.secondary:hover {
-            background-color: var(--color-border); /* Light background on hover */
-            transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08); /* Subtle shadow on hover for secondary */
-        }
-        /* Dark Mode specific for secondary button */
-        body.dark-mode .cta-button.secondary {
-            background-color: transparent;
-            color: var(--color-text-secondary); /* Adjust color for dark mode secondary text */
-            border-color: var(--color-border);
-        }
-        body.dark-mode .cta-button.secondary:hover {
-            background-color: var(--color-border); /* Use dark mode border color for hover fill */
-            color: var(--color-text-primary); /* Primary text color for contrast */
-        }
-
-
-        /* Scroll Indicator Styling */
-        .scroll-indicator {
-            position: absolute; /* Absolute position relative to #hero */
-            bottom: 2rem; /* Aligned to the bottom of the hero section */
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-            animation: pulse 2s infinite; /* Continuous pulse animation for attention */
-        }
-
-        /* Scroll Indicator Text */
-        .scroll-indicator span {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Scroll Indicator Arrow */
-        .scroll-indicator .arrow {
-            font-size: 1.5rem; /* Size of the down arrow icon */
-            color: var(--color-text-secondary);
-            animation: bounce 1.5s infinite; /* Bouncing arrow animation */
-        }
-
-        /* Responsive Adjustments for various screen sizes */
-        @media (max-width: 1024px) {
-            #hero h1 { font-size: 4rem; }
-            .hero-main-content .subheadline { font-size: 1.5rem; }
-            .hero-illustration { max-width: 600px; }
-        }
-
-        @media (max-width: 768px) {
-            #hero {
-                padding: 4rem 1rem;
-                height: auto; /* Allow height to adjust based on content on smaller screens */
-                min-height: 85vh; /* Ensures the hero is still visually dominant */
-                justify-content: flex-start; /* Aligns content from the top on mobile */
-            }
-            #hero h1 { font-size: 2.5rem; line-height: 1.2; }
-            .hero-main-content .subheadline { font-size: 1.1rem; max-width: 100%; }
-            .hero-main-content .trust-tagline { font-size: 0.85rem; margin-bottom: 2rem; }
-            
-            .hero-illustration {
-                width: 95%; /* Increases illustration size on mobile */
-                margin-bottom: 0; /* No margin-bottom when absolutely positioned */
-                bottom: 0; /* Stick to bottom of hero section */
-            }
-            .cta-group {
-                flex-direction: column; /* Stacks buttons vertically on mobile */
-                gap: 1rem; /* Smaller gap when stacked */
-                margin-bottom: 3rem; /* Adjusts margin for mobile */
-            }
-            .cta-button {
-                width: 100%; /* Full width buttons for easy tapping */
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-            .scroll-indicator {
-                bottom: 1rem; /* Adjusts position on mobile */
-            }
-        }
-        @media (max-width: 480px) {
-            #hero h1 { font-size: 2rem; }
-            .hero-main-content .subheadline { font-size: 1rem; }
-            .cta-button { font-size: 0.95rem; }
-        }
-
-        /* General Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        /* Pulse and Bounce animations are defined for scroll-indicator */
-
-        /* Existing CSS for other sections */
-
-        /* Floating CTA Navbar */
-        #floating-cta-navbar {
-            position: fixed;
-            top: 0;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-            backdrop-filter: blur(10px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 100;
-            padding: 0.75rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transform: translateY(-100%); /* Start off-screen */
-            transition: transform 0.3s ease-out;
-        }
-        #floating-cta-navbar.is-visible {
-            transform: translateY(0%); /* Slide in */
-        }
-        body.dark-mode #floating-cta-navbar {
-            background-color: rgba(44, 44, 46, 0.9); /* Dark mode semi-transparent */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        #floating-cta-navbar .logo {
-            font-weight: 700;
-            color: var(--color-text-primary);
-            font-size: 1.25rem;
-        }
-        #floating-cta-navbar .nav-buttons button, #floating-cta-navbar .nav-buttons a {
-            background: none;
-            border: none;
-            color: var(--color-text-primary);
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            text-decoration: none;
-        }
-        #floating-cta-navbar .nav-buttons button:hover, #floating-cta-navbar .nav-buttons a:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-        body.dark-mode #floating-cta-navbar .nav-buttons button:hover, body.dark-mode #floating-cta-navbar .nav-buttons a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-        .mode-toggle {
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--color-text-primary);
-            background: none;
-            border: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background-color 0.2s ease;
-        }
-        .mode-toggle:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-        body.dark-mode .mode-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-        
-        /* Card Grid (Key Findings) */
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            margin-top: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
         }
         @media (min-width: 768px) {
-            .card-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .chart-container {
+                height: 350px;
             }
         }
-        .data-card {
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
-            padding: 3rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .data-card:hover {
-            transform: translateY(-8px); /* Deeper lift on hover */
-        }
-        .data-card .stat {
-            font-size: 4.5rem; /* Larger stat */
-            font-weight: 800;
-            color: var(--color-accent-blue);
-            margin-bottom: 0.75rem;
-            line-height: 1;
-        }
-        .data-card .description {
-            font-size: 1.2rem;
-            color: var(--color-text-secondary);
-            max-width: 250px;
-            margin: 0 auto;
-        }
-
-        /* Icon Grid (What is Doomscrolling?) */
-        .icon-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-            text-align: center;
-        }
-        @media (min-width: 768px) {
-            .icon-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        .icon-item {
-            background-color: var(--color-card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .icon-item .icon {
-            font-size: 4rem; /* Larger icons */
-            margin-bottom: 1rem;
-        }
-        .icon-item .label {
-            font-weight: 600;
-            color: var(--color-text-primary);
-            font-size: 1.1rem;
-        }
-
-        /* Split Layout (Platforms vs. People) */
-        .split-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 0; /* No gap directly, controlled by children */
-            margin-top: 3rem;
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            overflow: hidden; /* For border radius */
-        }
-        @media (min-width: 992px) {
-            .split-layout {
-                flex-direction: row;
-                min-height: 600px; /* Ensure content height */
-            }
-        }
-        .split-column {
-            flex: 1;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start; /* Default align */
-        }
-        .split-column:first-child {
-            border-bottom: 1px solid var(--color-border); /* Separator for mobile */
-        }
-        @media (min-width: 992px) {
-            .split-column:first-child {
-                border-right: 1px solid var(--color-border); /* Vertical separator */
-                border-bottom: none;
-            }
-        }
-        .split-column h3 {
-            text-align: left;
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            color: var(--color-text-primary);
-            font-size: 1.75rem;
-        }
-        .split-column ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .split-column li {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+        .flow-line {
+            position: relative;
+            border-left: 2px dashed #94d2bd;
+            margin-left: 1.25rem;
             padding-left: 2rem;
-            position: relative;
-            color: var(--color-text-secondary);
+            padding-bottom: 2rem;
         }
-        .split-column li::before {
-            content: '→'; /* Unicode arrow */
+        .flow-line:before {
+            content: '▼';
             position: absolute;
-            left: 0;
-            color: var(--color-accent-blue);
+            left: -11px;
+            top: -5px;
+            color: #ee9b00;
+            font-size: 1.25rem;
+        }
+        .flow-line:last-child {
+            border-left: none;
+        }
+        .flow-line:last-child:after {
+            content: '✓';
+            position: absolute;
+            left: -11px;
+            top: -5px;
+            color: #0a9396;
+            font-size: 1.25rem;
             font-weight: bold;
-            font-size: 1.2em;
-            line-height: 1;
-        }
-        .split-column.user-consequences li::before {
-            content: '⚠️'; /* Unicode warning */
-            color: #FD6B6B; /* A subtle red */
         }
 
-        /* Headline Reframer Section */
-        #headline-reframer {
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 3rem;
-            text-align: center;
-            margin-top: 4rem; /* Add some space from previous section */
-        }
-        #headline-reframer textarea {
-            width: 100%;
-            height: 100px;
-            padding: 1rem;
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            font-family: var(--font-primary);
-            font-size: 1rem;
-            color: var(--color-text-primary);
-            margin-bottom: 1.5rem;
-            resize: vertical;
-            background-color: var(--color-background); /* Match background */
-        }
-        #headline-reframer button {
-            background-color: var(--color-accent-blue);
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 9999px;
-            border: none;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            display: inline-flex;
-            align-items: center;
+        .loop-container {
+            display: flex;
             justify-content: center;
-            gap: 0.5rem;
-        }
-        #headline-reframer button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: translateY(-2px);
-        }
-        #headline-reframer #reframed-headline {
-            margin-top: 2rem;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--color-text-primary);
-            min-height: 2.5rem; /* Ensure space even when empty */
-        }
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--color-accent-blue);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: none; /* Hidden by default */
-            margin: 1rem auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Digital Well-being Tools Section */
-        #wellbeing-tools .tool-card {
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 3rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        #wellbeing-tools .tool-card:hover {
-            transform: translateY(-8px);
-        }
-        #wellbeing-tools .tool-card h3 {
-            color: var(--color-accent-blue);
-        }
-        #wellbeing-tools .slider-container {
-            margin-top: 1.5rem;
-            text-align: left;
-            padding: 0 1rem;
-        }
-        #wellbeing-tools input[type="range"] {
+            align-items: center;
+            position: relative;
             width: 100%;
-            -webkit-appearance: none;
-            height: 8px;
-            background: var(--color-border);
-            border-radius: 5px;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
+            padding-top: 100%; 
         }
-        #wellbeing-tools input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
+
+        .loop-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
             border-radius: 50%;
-            background: var(--color-accent-blue);
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        #wellbeing-tools input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--color-accent-blue);
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        #wellbeing-tools #fatigue-risk-output {
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--color-text-primary);
-        }
-        #wellbeing-tools .risk-low { color: #28A745; } /* Green */
-        #wellbeing-tools .risk-medium { color: #FFC107; } /* Yellow */
-        #wellbeing-tools .risk-high { color: #DC3545; } /* Red */
-
-        /* AI Companion Cards */
-        .ai-companion-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            margin-top: 2.5rem;
-        }
-        @media (min-width: 768px) {
-            .ai-companion-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        .ai-companion-card {
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 2.5rem;
-            text-align: left;
             display: flex;
-            align-items: flex-start;
-            gap: 1.5rem;
-        }
-        .ai-companion-card .icon {
-            font-size: 3.5rem;
-            color: var(--color-accent-blue);
-            flex-shrink: 0;
-        }
-        .ai-companion-card .content h4 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--color-text-primary);
-        }
-        .ai-companion-card .content p {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-        }
-
-
-        /* Timeline / Metaphor */
-        .timeline-wrapper {
-            overflow-x: scroll;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x mandatory;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            position: relative; /* For scrollbar styling */
-        }
-        /* Ensure scrollbar is always visible */
-        .timeline-wrapper::-webkit-scrollbar {
-            height: 8px;
-            background-color: var(--color-border);
-            border-radius: 4px;
-        }
-        .timeline-wrapper::-webkit-scrollbar-thumb {
-            background-color: var(--color-accent-blue);
-            border-radius: 4px;
-        }
-        .timeline-inner {
-            display: flex;
-            white-space: nowrap; /* Keep items in a single line */
-            gap: 4rem; /* Spacing between items */
-            padding: 0 20vw; /* Padding to center items at ends */
-            align-items: flex-start; /* Align items to the top if heights vary */
-        }
-        .timeline-item {
-            display: inline-flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             text-align: center;
-            scroll-snap-align: center;
-            flex-shrink: 0; /* Prevent items from shrinking */
-            width: 280px; /* Fixed width for each item */
-            opacity: 0.4;
-            transition: opacity 0.6s ease-out;
-            white-space: normal; /* Allow text to wrap within the item */
         }
-        .timeline-item.active-scroll {
-            opacity: 1;
-        }
-        .timeline-item-icon {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            color: var(--color-accent-blue);
-        }
-        .timeline-item-year {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--color-text-primary);
-            margin-bottom: 0.5rem;
-        }
-        .timeline-item-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--color-text-primary);
-            margin-bottom: 0.75rem;
-            line-height: 1.3; /* Ensure enough space for wrapping text */
-        }
-        .timeline-item-description {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-            line-height: 1.5; /* Ensure enough space for wrapping text */
-        }
-
-        /* Solutions as Feature Cards */
-        .solution-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            margin-top: 3rem;
-        }
-        @media (min-width: 768px) {
-            .solution-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (min-width: 1024px) {
-            .solution-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        .solution-card {
-            background-color: var(--color-card-bg);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            padding: 3rem 2rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-            height: 100%; /* Ensure cards are same height in grid */
+        .loop-item {
+            position: absolute;
+            width: 30%;
+            height: 30%;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
-        }
-        .solution-card:hover {
-            transform: translateY(-8px);
-        }
-        .solution-card .icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            color: var(--color-accent-blue);
-        }
-        .solution-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--color-text-primary);
-            line-height: 1.3;
-        }
-        .solution-card p {
-            font-size: 1rem;
-            color: var(--color-text-secondary);
-            flex-grow: 1; /* Make paragraphs take available space */
-        }
-
-        /* Final Manifesto Section */
-        #manifesto {
-            background-color: var(--color-accent-blue);
-            color: var(--color-card-bg);
             text-align: center;
-            padding: 8rem 2rem;
-            border-radius: 16px;
-            margin-bottom: 4rem;
-            box-shadow: 0 12px 36px rgba(0, 122, 255, 0.2);
-            position: relative; /* For the floating quote effect */
-            overflow: hidden; /* For background effect */
-            background: linear-gradient(135deg, rgba(0, 122, 255, 0.9) 0%, rgba(0, 100, 200, 0.9) 100%),
-                        radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            font-size: 0.75rem;
         }
-        #manifesto .quote {
-            font-family: var(--font-serif); /* Serif font for quote */
-            font-size: 3.5rem;
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            color: var(--color-card-bg);
-            position: relative;
-            z-index: 10;
-        }
-        #manifesto .subtext {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 10;
-        }
-        /* NOTE: .cta-button global style conflict resolved.
-           The .cta-button below is now the standard style used across the site.
-           #hero's cta-buttons leverage this global style.
-        */
-        .cta-button { 
-            display: inline-block;
-            background-color: var(--color-card-bg); /* Default white for manifesto section */
-            color: var(--color-accent-blue);
-            padding: 1rem 2.5rem;
-            border-radius: 9999px; /* Pill shape */
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 10;
-            white-space: nowrap; /* Prevent button text from wrapping */
-        }
-        .cta-button:hover {
-            background-color: #E0E0E0;
-            transform: translateY(-2px);
-        }
-
-
-        /* Consolidated Responsive Adjustments for all sections */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.8rem; } /* Global override for h1 on smaller screens */
-            h2 { font-size: 2rem; }
-            h3 { font-size: 1.5rem; }
-            p { font-size: 1rem; } /* Adjusted general paragraph size */
-            
-            .data-card .stat { font-size: 3rem; }
-            .data-card .description { font-size: 1rem; }
-            .icon-item .icon { font-size: 3rem; }
-            .timeline-item { width: 220px; }
-            .timeline-item-icon { font-size: 4rem; }
-            .timeline-item-year { font-size: 1.2rem; }
-            .timeline-item-title { font-size: 1rem; }
-            .solution-card .icon { font-size: 3rem; }
-            .solution-card h3 { font-size: 1.25rem; }
-            #manifesto .quote { font-size: 2rem; }
-            #manifesto .subtext { font-size: 1.1rem; }
-
-            /* Mobile specific hero adjustments */
-            #hero h1 { font-size: 2.5rem; line-height: 1.2; } /* Override for hero's h1 */
-            .hero-main-content .subheadline { font-size: 1.1rem; max-width: 100%; }
-            .hero-main-content .trust-tagline { font-size: 0.85rem; margin-bottom: 2rem; }
-            
-            .hero-illustration {
-                width: 95%; /* Increase illustration size on mobile */
-                margin-bottom: 0; /* No margin-bottom when absolutely positioned */
-                bottom: 0; /* Stick to bottom of hero section */
-            }
-            .cta-group {
-                flex-direction: column; /* Stacks buttons vertically on mobile */
-                gap: 1rem; /* Smaller gap when stacked */
-                margin-bottom: 3rem; /* Adjusts margin for mobile */
-            }
-            .cta-button {
-                width: 100%; /* Full width buttons for easy tapping */
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-            .scroll-indicator {
-                bottom: 1rem; /* Adjusts position on mobile */
-            }
-        }
-        @media (max-width: 480px) {
-            #hero h1 { font-size: 2rem; }
-            .hero-main-content .subheadline { font-size: 1rem; }
-            .cta-button { font-size: 0.95rem; }
-        }
-
     </style>
 </head>
-<body>
+<body class="text-gray-200">
 
-    <!-- Floating CTA Navbar -->
-    <nav id="floating-cta-navbar" class="hidden">
-        <span class="logo">The Digital Dilemma</span>
-        <div class="nav-buttons">
-            <a href="#key-findings">Insights</a>
-            <a href="#solutions">Solutions</a>
-            <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf">Download PDF</a>
-            <button id="mode-toggle" class="mode-toggle">💡</button>
-        </div>
-    </nav>
+    <div class="container mx-auto p-4 md:p-8">
 
-    <!-- Hero Section: The Digital Dilemma - This is the main landing area of the website -->
-    <section id="hero">
-        <!-- Main content of the hero section, wrapped for proper stacking and layout -->
-        <div class="hero-main-content container">
-            <!-- Main Headline: Clear and impactful statement of the website's core message -->
-            <h1>The Digital Dilemma:<br>Are We Designing for Attention or Addiction?</h1>
-            
-            <!-- Subheadline: Provides context and value proposition of the research -->
-            <p class="subheadline">A comprehensive manifesto exploring how platform design subtly trades user well-being for engagement, and a path towards ethical innovation.</p>
-            
-            <!-- Credibility Tag: Establishes authority and trustworthiness of the research -->
-            <p class="trust-tagline">Backed by a 40+ study meta-analysis (2015–2024)</p>
-            
-            <!-- CTA Buttons Group: Provides clear calls to action for visitors -->
-            <div class="cta-group">
-                <!-- Primary CTA: Encourages exploration of detailed insights -->
-                <a href="#key-findings" class="cta-button primary-cta-button">Explore Key Insights</a>
-                <!-- Secondary CTA: Offers a direct download of the full manifesto document -->
-                <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf" class="cta-button secondary">Download the Manifesto (PDF)</a>
+        <header class="text-center mb-12 md:mb-20">
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-4">The Post-Screen Revolution</h1>
+            <p class="text-lg md:text-xl text-[#94d2bd] max-w-4xl mx-auto">Traditional marketing is obsolete. A new paradigm of voice, ambient, and screenless interfaces is reshaping consumer behavior. Success now hinges on utility, trust, and seamless, invisible experiences.</p>
+        </header>
+        
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl font-bold text-center text-white mb-8">An Exploding Market of Invisible Interfaces</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
+                <div class="bg-[#005f73]/50 p-6 rounded-lg shadow-2xl">
+                    <p class="text-5xl font-extrabold text-[#ee9b00] mb-2">$40B+</p>
+                    <p class="text-[#94d2bd] font-semibold">Projected Voice Commerce Market by 2025</p>
+                </div>
+                <div class="bg-[#005f73]/50 p-6 rounded-lg shadow-2xl">
+                    <p class="text-5xl font-extrabold text-[#ee9b00] mb-2">$319B+</p>
+                    <p class="text-[#94d2bd] font-semibold">Projected Ambient Commerce Market by 2034</p>
+                </div>
+                 <div class="bg-[#005f73]/50 p-6 rounded-lg shadow-2xl">
+                    <p class="text-5xl font-extrabold text-[#ee9b00] mb-2">362M</p>
+                    <p class="text-[#94d2bd] font-semibold">Projected Smart Speaker Sales by 2029</p>
+                </div>
             </div>
-        </div>
-
-        <!-- Scroll Down Hint: Guides users to discover more content below the fold -->
-        <a href="#key-findings" class="scroll-indicator">
-            <span>Scroll Down</span>
-            <div class="arrow">↓</div>
-        </a>
-    </section>
-
-    <main>
-        <!-- Key Findings Section -->
-        <section id="key-findings" class="container">
-            <h2>Unveiling the Hidden Costs</h2>
-            <p>The pursuit of endless engagement has tangible, measurable impacts on users and brands alike. Here are the core insights from our meta-analysis.</p>
-            <div class="card-grid">
-                <div class="data-card">
-                    <div class="stat">9x</div>
-                    <div class="description">more likely to report high acute stress after 6+ hours of negative media exposure.</div>
+            <div class="mt-10 bg-[#005f73]/30 p-4 md:p-6 rounded-lg shadow-lg">
+                 <p class="text-center text-lg text-[#e9d8a6] mb-4">Market Growth Projections (in Billions USD)</p>
+                <div class="chart-container h-96 max-h-[450px]">
+                    <canvas id="marketGrowthChart"></canvas>
                 </div>
-                <div class="data-card">
-                    <div class="stat">+2.3%</div>
-                    <div class="description">increase in Click-Through Rate for each additional negative word in a headline.</div>
-                </div>
-                <div class="data-card">
-                    <div class="stat">~55 min</div>
-                    <div class="description">average daily session duration on platforms like TikTok, fueled by hyper-optimized, endless feeds.</div>
-                </div>
+                <p class="text-center mt-4 text-sm text-[#94d2bd]">The rapid, concurrent growth of voice, ambient, and screenless technologies signals a fundamental shift in how consumers will interact with brands and make purchasing decisions, moving away from screens and towards integrated, contextual experiences.</p>
             </div>
         </section>
 
-        <!-- What is Doomscrolling? Section -->
-        <section id="what-is-doomscrolling" class="container">
-            <h2>Doomscrolling: More Than Just a Bad Habit</h2>
-            <p>It's the compulsive, often mindless, consumption of distressing content, reinforced by platform design, with profound consequences for mental and cognitive health.</p>
-            <div class="icon-grid">
-                <div class="icon-item">
-                    <span class="icon">😟</span>
-                    <span class="label">Increased Stress & Anxiety</span>
-                </div>
-                <div class="icon-item">
-                    <span class="icon">😴</span>
-                    <span class="label">Sleep Disruption</span>
-                </div>
-                <div class="icon-item">
-                    <span class="icon">🧠</span>
-                    <span class="label">Cognitive Overload</span>
-                </div>
-                <div class="icon-item">
-                    <span class="icon">🔄</span>
-                    <span class="label">Compulsive Behavior</span>
-                </div>
-            </div>
-            <p class="text-center" style="font-size: 0.9rem; margin-top: 2rem;">Source: Meta-analysis of 40+ peer-reviewed studies (2015-2024)</p>
-        </section>
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl font-bold text-center text-white mb-8">The Funnel is Broken: From Linear Paths to Loyalty Loops</h2>
+            <p class="text-center max-w-3xl mx-auto text-[#94d2bd] mb-12">The traditional, linear marketing funnel was built for a visual, click-based world. In the post-screen era, consumer journeys are non-linear, continuous, and driven by proactive, AI-powered utility.</p>
 
-        <!-- Split Section: Platforms vs. People -->
-        <section id="platforms-vs-people" class="container">
-            <h2>The Paradox: Designed for Engagement, Experienced as Exhaustion</h2>
-            <p>A closer look reveals the deliberate tension between platform objectives and human well-being.</p>
-            <div class="split-layout">
-                <div class="split-column platform-design">
-                    <h3>How Platforms Design for Engagement</h3>
-                    <ul>
-                        <li>Infinite Scroll: Eliminates stopping points, fostering endless consumption.</li>
-                        <li>Push Notifications: Creates FOMO and urgency, driving compulsive re-engagement.</li>
-                        <li>Algorithmic Headlines: Prioritizes sensational, negative content for higher CTR.</li>
-                        <li>Hyper-Personalized Feeds: Creates "reality bubbles," reinforcing biases.</li>
-                        <li>Sensory Overload: Overwhelms cognitive processing with rapid visuals and sounds.</li>
-                        <li>Decision Fatigue: Constant micro-choices exhaust mental energy, hindering disengagement.</li>
-                    </ul>
-                </div>
-                <div class="split-column user-consequences">
-                    <h3>What Users Feel (The Ethical Cost)</h3>
-                    <ul>
-                        <li>Heightened Anxiety: Spikes stress hormones, worsening mental health.</li>
-                        <li>Digital Burnout: Exhaustion from constant cognitive and emotional load.</li>
-                        <li>Erosion of Trust: Skepticism towards platforms, leading to brand distrust.</li>
-                        <li>Reduced Autonomy: Feeling trapped in a compulsive engagement loop.</li>
-                        <li>Silent Churn: Gradual disengagement due to fatigue, impacting long-term loyalty.</li>
-                        <li>Societal Polarization: Reinforcement of biases within "echo chambers."</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Headline Reframer Section (LLM-powered) -->
-        <section id="headline-reframer" class="container">
-            <h2>Reframing the Narrative ✨</h2>
-            <p>Experience how a headline can be transformed. Input a negative headline and see an AI-generated, more balanced, yet informative alternative.</p>
-            <textarea id="headline-input" placeholder="Enter a negative headline here... e.g., 'Economic Collapse Imminent: Stocks Plummet, Experts Warn of Crisis'"></textarea>
-            <button id="reframing-button">Reframewith ✨AI</button>
-            <div id="loading-spinner" class="loading-spinner"></div>
-            <p id="reframed-headline" class="text-xl font-semibold text-center"></p>
-            <p class="text-sm text-gray-500 mt-4">Powered by Gemini AI (gemini-2.0-flash).</p>
-        </section>
-
-        <!-- Digital Well-being Tools Section -->
-        <section id="wellbeing-tools" class="container">
-            <h2>Your Digital Well-being Navigator</h2>
-            <p>Proactive tools and emotionally intelligent design can help you manage digital fatigue and foster healthier engagement.</p>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="tool-card">
-                    <h3>Assess Your Fatigue Risk</h3>
-                    <p>Input your typical daily session length and perceived negative content exposure to estimate your burnout risk.</p>
-                    <div class="slider-container">
-                        <label for="session-length" class="block text-left text-sm font-semibold mb-2">Daily Session Length (hours): <span id="session-length-value">1</span></label>
-                        <input type="range" id="session-length" min="0" max="8" value="1" step="0.5">
-                    </div>
-                    <div class="slider-container mt-4">
-                        <label for="negative-exposure" class="block text-left text-sm font-semibold mb-2">Negative Content Exposure (1-5): <span id="negative-exposure-value">1</span></label>
-                        <input type="range" id="negative-exposure" min="1" max="5" value="1" step="1">
-                    </div>
-                    <div id="fatigue-risk-output" class="mt-4">Risk: Low</div>
-                </div>
-
-                <div class="tool-card">
-                    <h3>AI Companions in Action</h3>
-                    <p>Imagine AI designed to support your mental state, not just maximize screen time. Here are examples of how they might interact.</p>
-                    <div class="ai-companion-grid">
-                        <div class="ai-companion-card">
-                            <span class="icon">💬</span>
-                            <div class="content">
-                                <h4>Proactive Nudge</h4>
-                                <p>AI: "You've been engaging with intense news for a while. Would you like a short break or a calming story?"</p>
-                            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-[#005f73]/30 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-center text-[#e9d8a6] mb-6">Traditional Marketing Funnel</h3>
+                    <div class="space-y-4">
+                        <div class="flow-line">
+                            <h4 class="font-bold text-white text-lg">📢 Awareness</h4>
+                            <p class="text-sm text-[#94d2bd]">Relies on visual ads, impressions, and screen dominance.</p>
                         </div>
-                        <div class="ai-companion-card">
-                            <span class="icon">📈</span>
-                            <div class="content">
-                                <h4>Fatigue Feedback</h4>
-                                <p>AI: "Based on your activity, your digital fatigue level is moderate. Perhaps a mindful minute would help?"</p>
-                            </div>
+                        <div class="flow-line">
+                            <h4 class="font-bold text-white text-lg">🖱️ Consideration</h4>
+                            <p class="text-sm text-[#94d2bd]">Measured by clicks, page views, and visual comparisons.</p>
+                        </div>
+                        <div class="flow-line">
+                            <h4 class="font-bold text-white text-lg">🛒 Conversion</h4>
+                            <p class="text-sm text-[#94d2bd]">A distinct, final action in a linear, tracked session.</p>
+                        </div>
+                        <div class="flow-line">
+                            <h4 class="font-bold text-white text-lg">⭐ Loyalty</h4>
+                            <p class="text-sm text-[#94d2bd]">An endpoint; a post-purchase goal.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-
-        <!-- Timeline / Metaphor -->
-        <section id="timeline-metaphor" class="container">
-            <h2>From 1984 to IO: Charting the Ethical Shift in Tech</h2>
-            <p>Technology's promise has evolved from liberation to subtle control. A new paradigm is emerging to reclaim its human-centric purpose.</p>
-            <div class="timeline-wrapper">
-                <div class="timeline-inner">
-                    <div class="timeline-item">
-                        <span class="timeline-item-icon">📺</span>
-                        <div class="timeline-item-year">1984</div>
-                        <div class="timeline-item-title">Apple's Liberation Vision</div>
-                        <p class="timeline-item-description">Macintosh challenges "Big Brother," symbolizing technology as a force for freedom and individual empowerment.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-item-icon">♾️</span>
-                        <div class="timeline-item-year">2006+</div>
-                        <div class="timeline-item-title">Rise of Addictive Design</div>
-                        <p class="timeline-item-description">Infinite scroll, push notifications, and engagement-optimized algorithms dominate, prioritizing time-on-site over well-being.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-item-icon">🤯</span>
-                        <div class="timeline-item-year">2010s</div>
-                        <div class="timeline-item-title">Doomscrolling Epidemic</div>
-                        <p class="timeline-item-description">Compulsive consumption of negative content becomes widespread, revealing the human cost of unbridled engagement.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-item-icon">💬</span>
-                        <div class="timeline-item-year">2023+</div>
-                        <div class="timeline-item-title">Altman + Jony Ive IO Device</div>
-                        <p class="timeline-item-description">A screen-free, AI-driven wearable designed to "wean users away from screens," signaling a philosophical shift towards humane tech.</p>
-                    </div>
-                     <div class="timeline-item">
-                        <span class="timeline-item-icon">✨</span>
-                        <div class="timeline-item-year">Future</div>
-                        <div class="timeline-item-title">Emotionally Aware Platforms</div>
-                        <p class="timeline-item-description">The imperative for marketing to align with user well-being, fostering sustainable engagement and rebuilding trust through ethical design.</p>
-                    </div>
+                <div class="bg-[#005f73]/30 p-6 rounded-lg shadow-lg flex flex-col items-center">
+                    <h3 class="text-2xl font-bold text-center text-[#e9d8a6] mb-6">Post-Screen Loyalty Loop</h3>
+                     <div class="relative w-full max-w-sm aspect-square">
+                        <div class="absolute inset-0 border-4 border-dashed border-[#0a9396] rounded-full animate-spin" style="animation-duration: 20s;"></div>
+                        
+                        <div class="loop-center bg-[#ee9b00] text-[#001219] p-4">
+                            <p class="font-bold">AI-Powered Utility</p>
+                        </div>
+                        
+                        <div class="loop-item bg-[#0a9396] text-white" style="top: 0; left: 50%; transform: translate(-50%, -50%);">
+                            <p>Contextual Prompts</p>
+                        </div>
+                        <div class="loop-item bg-[#94d2bd] text-[#001219]" style="top: 50%; right: 0; transform: translate(50%, -50%);">
+                            <p>Proactive Assistance</p>
+                        </div>
+                        <div class="loop-item bg-[#0a9396] text-white" style="bottom: 0; left: 50%; transform: translate(-50%, 50%);">
+                            <p>Effortless Re-engagement</p>
+                        </div>
+                        <div class="loop-item bg-[#94d2bd] text-[#001219]" style="top: 50%; left: 0; transform: translate(-50%, -50%);">
+                            <p>Sonic Branding</p>
+                        </div>
+                     </div>
+                     <p class="text-sm text-center text-[#94d2bd] mt-6">Loyalty is no longer a stage, but a continuous cycle reinforced by the interface's seamless value. The brand becomes an indispensable part of the user's life by anticipating needs and reducing cognitive load.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Solutions as Feature Cards -->
-        <section id="solutions" class="container">
-            <h2>Pioneering a Human-Centric Digital Future</h2>
-            <p>Moving from exploitation to empowerment requires a strategic pivot in product design and marketing. Here are key solutions for a healthier digital ecosystem.</p>
-            <div class="solution-grid">
-                <div class="solution-card">
-                    <span class="icon">📊</span>
-                    <h3>Digital Fatigue Index (DFI)</h3>
-                    <p>A new KPI to quantify user distress in real-time, leveraging digital biomarkers and AI for proactive, personalized interventions.</p>
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl font-bold text-center text-white mb-8">Case Studies: Quantifiable Success in the New Era</h2>
+            <p class="text-center max-w-3xl mx-auto text-[#94d2bd] mb-12">Pioneering brands are already demonstrating the power of voice and ambient AI, shifting their focus from promotion to indispensable utility and seeing significant returns.</p>
+            <div class="bg-[#005f73]/30 p-4 md:p-6 rounded-lg shadow-lg">
+                 <p class="text-center text-lg text-[#e9d8a6] mb-4">Key Performance Increases via Voice & AI Interfaces</p>
+                <div class="chart-container">
+                    <canvas id="caseStudyChart"></canvas>
                 </div>
-                <div class="solution-card">
-                    <span class="icon">🤖</span>
-                    <h3>AI Companions (Emotional UX)</h3>
-                    <p>Emotionally intelligent AI designed to augment human well-being, providing empathetic support and guiding users towards healthier digital habits.</p>
+                 <p class="text-center mt-4 text-sm text-[#94d2bd]">These metrics show that successful voice and ambient strategies directly translate to core business goals: increased loyalty (Starbucks), customer retention (Domino's), and operational efficiency (Capital One).</p>
+            </div>
+        </section>
+        
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl font-bold text-center text-white mb-8">The Human Element: Navigating Trust and Ethics</h2>
+            <p class="text-center max-w-3xl mx-auto text-[#94d2bd] mb-12">As interfaces become invisible, the ethical responsibilities become more visible. Building and maintaining consumer trust is the most critical challenge, requiring a careful balance of personalization, utility, and privacy.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-[#005f73]/30 p-4 md:p-6 rounded-lg shadow-lg">
+                    <p class="text-center text-lg text-[#e9d8a6] mb-4">Consumer Ethical Concern Levels</p>
+                    <div class="chart-container">
+                        <canvas id="ethicsRadarChart"></canvas>
+                    </div>
+                     <p class="text-center mt-4 text-sm text-[#94d2bd]">Data privacy and the potential for manipulation are top-of-mind for consumers. Brands must address these fears with radical transparency and user control to prevent adoption hurdles.</p>
                 </div>
-                <div class="solution-card">
-                    <span class="icon">🛑</span>
-                    <h3>Personalized Friction & Breaks</h3>
-                    <p>Strategic, user-sensitive interruptions (e.g., "Are you still watching?" prompts) to break compulsive patterns and reintroduce mindful pauses.</p>
-                </div>
-                <div class="solution-card">
-                    <span class="icon">🧘‍♀️</span>
-                    <h3>Mindful Mode & Zero UI</h3>
-                    <p>Product features or screen-free interfaces that minimize cognitive load, allowing users to control their digital diet and reduce intrusive interactions.</p>
+
+                <div class="bg-[#005f73]/30 p-6 rounded-lg shadow-lg flex flex-col justify-center items-center">
+                    <h3 class="text-2xl font-bold text-center text-[#e9d8a6] mb-8">The Foundation of Post-Screen Success</h3>
+                    <div class="relative w-64 h-64">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-[#0a9396] rounded-full opacity-70 flex items-center justify-center">
+                            <span class="font-bold text-white">Personalization</span>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-40 h-40 bg-[#94d2bd] rounded-full opacity-70 flex items-center justify-center">
+                            <span class="font-bold text-[#001219]">Utility</span>
+                        </div>
+                        <div class="absolute bottom-0 right-0 w-40 h-40 bg-[#e9d8a6] rounded-full opacity-70 flex items-center justify-center">
+                             <span class="font-bold text-[#001219]">Privacy</span>
+                        </div>
+                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#ee9b00] rounded-full flex items-center justify-center text-center">
+                            <span class="font-extrabold text-[#001219]">TRUST</span>
+                        </div>
+                    </div>
+                    <p class="text-center mt-8 text-sm text-[#94d2bd]">Lasting consumer relationships in the ambient era are built where hyper-personalized experiences and genuine utility are founded upon an unbreakable commitment to user privacy and control. Trust is the central, non-negotiable element.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Final Manifesto Section -->
-        <section id="manifesto" class="container">
-            <div class="quote">“The future of marketing is emotionally aware.”</div>
-            <p class="subtext">Let’s design systems that empower, not exhaust. A call for a new era of digital products built on trust, well-being, and sustainable engagement.</p>
-            <a href="doomscrolling_manifesto.pdf" download="doomscrolling_manifesto.pdf" class="cta-button">Download the Full Research (PDF)</a>
-        </section>
-    </main>
+        <footer class="text-center border-t border-[#005f73] pt-8">
+            <h3 class="text-2xl font-bold text-white mb-4">Strategic Imperatives for the Future</h3>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-[#94d2bd]">
+                <div class="bg-[#005f73]/30 p-4 rounded-lg">
+                    <h4 class="font-bold text-white">Invest in Data Infrastructure</h4>
+                    <p class="text-sm">Unify data into real-time customer profiles.</p>
+                </div>
+                 <div class="bg-[#005f73]/30 p-4 rounded-lg">
+                    <h4 class="font-bold text-white">Adopt "Service-as-Marketing"</h4>
+                    <p class="text-sm">Shift focus from ads to proactive utility.</p>
+                </div>
+                 <div class="bg-[#005f73]/30 p-4 rounded-lg">
+                    <h4 class="font-bold text-white">Reinvent Measurement</h4>
+                    <p class="text-sm">Adopt new KPIs for non-visual interactions.</p>
+                </div>
+            </div>
+        </footer>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 The Digital Dilemma Research. Crafted for the next wave of emotionally intelligent design and ethical product innovation.</p>
-        </div>
-    </footer>
+    </div>
 
-    <!-- JavaScript for interactivity -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hero section content fade-in animation trigger
-            const heroMainContent = document.querySelector('.hero-main-content');
-            if (heroMainContent) {
-                heroMainContent.classList.add('is-visible');
-            }
+        const brilliantBluesPalette = {
+            darkTeal: '#005f73',
+            teal: '#0a9396',
+            lightTeal: '#94d2bd',
+            paleGold: '#e9d8a6',
+            orange: '#ee9b00',
+            burntOrange: '#ca6702',
+            rust: '#bb3e03',
+            darkRed: '#ae2012',
+            maroon: '#9b2226',
+            offWhite: '#f8f9fa'
+        };
 
-            // Smooth scroll for 'Explore Key Insights' button
-            const exploreInsightsButton = document.querySelector('.primary-cta-button');
-            if (exploreInsightsButton) {
-                exploreInsightsButton.addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent default anchor link behavior
-                    const targetId = this.getAttribute('href'); // Get the target section ID from href
-                    const targetElement = document.querySelector(targetId); // Find the target element in the DOM
-                    
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    } else {
-                        console.warn(`Scroll target element not found for 'Explore Key Insights': ${targetId}.`);
-                    }
-                });
-            }
-
-            // Smooth scroll for scroll indicator
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (scrollIndicator) {
-                scrollIndicator.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    } else {
-                        console.warn(`Scroll target element not found for scroll indicator: ${targetId}.`);
-                    }
-                });
-            }
-
-            // Intersection Observer for scroll animations (fade-in/slide-up) for other sections
-            const sections = document.querySelectorAll('section:not(#hero)'); // Targets all sections EXCEPT the hero section
-            const observerOptions = {
-                root: null,
-                threshold: 0.15 
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    } else {
-                        // Optional: remove 'is-visible' if you want animations to repeat on scroll up
-                        // entry.target.classList.remove('is-visible');
-                    }
-                });
-            }, observerOptions);
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // Floating CTA Navbar visibility
-            const floatingNavbar = document.getElementById('floating-cta-navbar');
-            const heroSection = document.getElementById('hero');
-
-            if (floatingNavbar && heroSection) {
-                const heroObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            floatingNavbar.classList.remove('is-visible');
-                        } else {
-                            floatingNavbar.classList.add('is-visible');
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: brilliantBluesPalette.lightTeal,
+                        font: {
+                            family: "'Inter', sans-serif"
                         }
-                    });
-                }, { rootMargin: "-100px 0px 0px 0px" }); // Show navbar once hero is largely out of view
-
-                heroObserver.observe(heroSection);
-            }
-
-
-            // Dark/Light Mode Toggle
-            const modeToggle = document.getElementById('mode-toggle');
-            if (modeToggle) {
-                modeToggle.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    if (document.body.classList.contains('dark-mode')) {
-                        localStorage.setItem('theme', 'dark');
-                        modeToggle.textContent = '☀️'; // Sun icon for light mode
-                    } else {
-                        localStorage.setItem('theme', 'light');
-                        modeToggle.textContent = '💡'; // Bulb icon for dark mode
                     }
-                });
-
-                // Apply saved theme on load
-                if (localStorage.getItem('theme') === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    modeToggle.textContent = '☀️';
-                } else {
-                    modeToggle.textContent = '💡';
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: brilliantBluesPalette.lightTeal },
+                    grid: { color: 'rgba(148, 210, 189, 0.2)' }
+                },
+                x: {
+                    ticks: { color: brilliantBluesPalette.lightTeal },
+                    grid: { color: 'rgba(148, 210, 189, 0.2)' }
                 }
             }
+        };
 
-
-            // Horizontal Timeline Scroll and Active State
-            const timelineWrapper = document.querySelector('.timeline-wrapper');
-            const timelineItems = document.querySelectorAll('.timeline-item');
-
-            if (timelineWrapper && timelineItems.length > 0) {
-                const updateTimelineActiveItem = () => {
-                    const wrapperRect = timelineWrapper.getBoundingClientRect();
-                    const wrapperCenter = wrapperRect.left + wrapperRect.width / 2;
-
-                    timelineItems.forEach(item => {
-                        const itemRect = item.getBoundingClientRect();
-                        const itemCenter = itemRect.left + itemRect.width / 2;
-
-                        const isCentered = Math.abs(itemCenter - wrapperCenter) < (wrapperRect.width / 4); 
-                        
-                        if (isCentered) {
-                            item.classList.add('active-scroll');
-                        } else {
-                            item.classList.remove('active-scroll');
-                        }
-                    });
-                };
-
-                timelineWrapper.addEventListener('scroll', updateTimelineActiveItem);
-                // Initial check on load
-                updateTimelineActiveItem();
+        function wrapText(label, maxWidth = 16) {
+            if (label.length <= maxWidth) {
+                return label;
             }
-
-
-            // Gemini API Integration for Headline Reframer
-            const headlineInput = document.getElementById('headline-input');
-            const reframingButton = document.getElementById('reframing-button');
-            const reframedHeadlineOutput = document.getElementById('reframed-headline');
-            const loadingSpinner = document.getElementById('loading-spinner');
-
-            if (reframingButton && headlineInput && reframedHeadlineOutput && loadingSpinner) {
-                reframingButton.addEventListener('click', async () => {
-                    const prompt = headlineInput.value.trim();
-                    if (!prompt) {
-                        reframedHeadlineOutput.textContent = "Please enter a headline to reframe.";
-                        return;
-                    }
-
-                    loadingSpinner.style.display = 'block';
-                    reframingButton.disabled = true;
-                    reframedHeadlineOutput.textContent = '';
-
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: `Reframe the following negative or sensational headline into a more neutral, informative, and balanced alternative. Focus on clarity and a positive, constructive, or objective tone. Ensure the reframed headline is concise and journalistic. Only provide the reframed headline as the response. Headline: "${prompt}"` }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = "AIzaSyAScLv7AlgSHP6Kx5EIO7KG9C5wAsE2BQo"; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
-                        }
-
-                        const result = await response.json();
-
-                        if (result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const text = result.candidates[0].content.parts[0].text;
-                            reframedHeadlineOutput.textContent = text;
-                        } else {
-                            reframedHeadlineOutput.textContent = "Could not reframe the headline. Unexpected API response structure.";
-                            console.error("Unexpected API response structure:", result);
-                        }
-                    } catch (error) {
-                        reframedHeadlineOutput.textContent = `Error: ${error.message}. Please try again later.`;
-                        console.error("Error calling Gemini API:", error);
-                    } finally {
-                        loadingSpinner.style.display = 'none';
-                        reframingButton.disabled = false;
-                    }
-                });
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine.trim());
             }
+            return lines;
+        }
 
 
-            // Emotional Fatigue Simulator
-            const sessionLengthInput = document.getElementById('session-length');
-            const negativeExposureInput = document.getElementById('negative-exposure');
-            const sessionLengthValueSpan = document.getElementById('session-length-value');
-            const negativeExposureValueSpan = document.getElementById('negative-exposure-value');
-            const fatigueRiskOutput = document.getElementById('fatigue-risk-output');
-
-            if (sessionLengthInput && negativeExposureInput && sessionLengthValueSpan && negativeExposureValueSpan && fatigueRiskOutput) {
-                const calculateFatigueRisk = () => {
-                    const sessionLength = parseFloat(sessionLengthInput.value);
-                    const negativeExposure = parseFloat(negativeExposureInput.value);
-
-                    sessionLengthValueSpan.textContent = sessionLength;
-                    negativeExposureValueSpan.textContent = negativeExposure;
-
-                    let riskLevel = 'Low';
-                    let riskClass = 'risk-low';
-
-                    if (sessionLength >= 4 || negativeExposure >= 4) {
-                        riskLevel = 'High';
-                        riskClass = 'risk-high';
-                    } else if (sessionLength >= 2 || negativeExposure >= 3) {
-                        riskLevel = 'Medium';
-                        riskClass = 'risk-medium';
+        new Chart(document.getElementById('marketGrowthChart'), {
+            type: 'line',
+            data: {
+                labels: ['2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034'],
+                datasets: [
+                    {
+                        label: 'Ambient Commerce',
+                        data: [40.15, 60, 85, 115, 150, 190, 235, 270, 295, 319.61],
+                        borderColor: brilliantBluesPalette.orange,
+                        backgroundColor: brilliantBluesPalette.orange + '33',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Voice Commerce',
+                        data: [40, 45, 50, 55, 60, 65, 70, 75, 80, 85], 
+                        borderColor: brilliantBluesPalette.teal,
+                        backgroundColor: brilliantBluesPalette.teal + '33',
+                        fill: true,
+                        tension: 0.4
                     }
+                ]
+            },
+            options: chartDefaultOptions
+        });
 
-                    fatigueRiskOutput.textContent = `Risk: ${riskLevel}`;
-                    fatigueRiskOutput.className = '';
-                    fatigueRiskOutput.classList.add(riskClass);
-                };
+        new Chart(document.getElementById('caseStudyChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Domino\'s (Repeat Orders)', 'Capital One (Mobile Banking Usage)', 'Starbucks (Active Rewards Members)'],
+                datasets: [{
+                    label: '% Increase',
+                    data: [28, 20, 14],
+                    backgroundColor: [
+                        brilliantBluesPalette.teal,
+                        brilliantBluesPalette.lightTeal,
+                        brilliantBluesPalette.paleGold
+                    ],
+                    borderColor: brilliantBluesPalette.darkTeal,
+                    borderWidth: 1
+                }]
+            },
+            options: { ...chartDefaultOptions, indexAxis: 'y', plugins: { legend: { display: false }, ...chartDefaultOptions.plugins } }
+        });
 
-                sessionLengthInput.addEventListener('input', calculateFatigueRisk);
-                negativeExposureInput.addEventListener('input', calculateFatigueRisk);
-
-                calculateFatigueRisk();
+        new Chart(document.getElementById('ethicsRadarChart'), {
+            type: 'radar',
+            data: {
+                labels: [
+                    wrapText('Data Privacy (Always-On)'), 
+                    wrapText('Algorithmic Bias'), 
+                    wrapText('User Manipulation (Implicit Influence)'),
+                    wrapText('Lack of Transparency'), 
+                    wrapText('Surveillance Anxiety')
+                ],
+                datasets: [{
+                    label: 'Level of Consumer Concern',
+                    data: [9, 7, 8, 8, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(238, 155, 0, 0.2)',
+                    borderColor: brilliantBluesPalette.orange,
+                    pointBackgroundColor: brilliantBluesPalette.orange,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: brilliantBluesPalette.orange
+                }]
+            },
+            options: {
+                ...chartDefaultOptions,
+                 scales: {
+                    r: {
+                        angleLines: { color: 'rgba(148, 210, 189, 0.2)' },
+                        grid: { color: 'rgba(148, 210, 189, 0.2)' },
+                        pointLabels: { 
+                            color: brilliantBluesPalette.lightTeal,
+                            font: { size: 12, family: "'Inter', sans-serif" }
+                        },
+                        ticks: {
+                            color: brilliantBluesPalette.paleGold,
+                            backdropColor: 'rgba(0,0,0,0.5)'
+                        }
+                    }
+                }
             }
         });
     </script>
+
 </body>
 </html>
